@@ -12,6 +12,7 @@ import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import FeedStackScreen from './screens/FeedStack';
 import * as Notifications from 'expo-notifications';
+import { registerForPushNotifications } from './logic/notifications';
 
 // Sentry.init({
 //   dsn: '',
@@ -43,16 +44,16 @@ const AppContent = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // const notificationSetup = async () => {
-    //   const notifToken = await AsyncStorage.getItem('notifToken');
+    const notificationSetup = async () => {
+      const notifToken = await AsyncStorage.getItem('notifToken');
 
-    //   if (!notifToken) {
-    //     const newNotifToken = await registerForPushNotifications();
-    //     await AsyncStorage.setItem('notifToken', newNotifToken);
-    //   }
-    // }
+      if (!notifToken) {
+        const newNotifToken = await registerForPushNotifications();
+        await AsyncStorage.setItem('notifToken', newNotifToken);
+      }
+    }
 
-    // notificationSetup();
+    notificationSetup();
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       console.log(notification);
