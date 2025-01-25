@@ -9,7 +9,7 @@ const ItemScreen = ({ navigation, route }) => {
     useState(() => {
         console.log(barcode);
     }, []);
-    
+
     return (
         <SafeAreaView>
             <View>
@@ -22,4 +22,4 @@ const ItemScreen = ({ navigation, route }) => {
     )
 }
 
-export default FeedScreen;
+export default ItemScreen;

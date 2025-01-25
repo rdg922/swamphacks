@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import FeedScreen from './Feed/FridgeScreen';
+import FridgeScreen from './Feed/FridgeScreen';
 import ItemScreen from './Feed/ItemScreen';
 import ScanBarcodeScreen from './Feed/ScanBarcodeScreen';
 
@@ -12,7 +12,7 @@ export default function FeedStackScreen() {
     <FeedStack.Navigator>
       <FeedStack.Screen
         name="Feed"
-        component={FeedScreen}
+        component={FridgeScreen}
         options={{ headerShown: false }}
       />
       <FeedStack.Screen
