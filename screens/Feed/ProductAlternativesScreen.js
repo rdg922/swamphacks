@@ -17,9 +17,12 @@ import { FridgeContext } from "../../contexts/FridgeContext";
 import { ProductAlternatives } from "../../components/ProductAlternatives";
 
 const ProductAlternativesScreen = ({ navigation, route }) => {
-  console.log("balls");
+  console.log("params", Object.keys(route.params));
 
-  return (<ProductAlternatives />);
+  const { synonyms, products } = route.params.alternativesData;
+
+
+  return (<ProductAlternatives aiSynonyms={synonyms} products={products} />);
 
 };
 

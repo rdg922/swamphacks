@@ -69,7 +69,7 @@ Given the user typed: "${searchTerm}"`;
   }
 };
 
-export async function fetchAlternativeData(searchTerm) {
+export async function getAlternativeData(searchTerm) {
   // 1) Get synonyms from AI
   const synonyms = await getSynonymsFromAI(searchTerm);
 
@@ -99,28 +99,28 @@ export async function fetchAlternativeData(searchTerm) {
   };
 }
 
-export const ProductAlternatives = ({ query = "Lays Chips", }) => {
-  const [aiSynonyms, setAiSynonyms] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-
-  useEffect(() => {
-    async function doFetch() {
-      setIsLoading(true);
-      try {
-        const { synonyms, products } = await fetchAlternativeData(query);
-        setAiSynonyms(synonyms);
-        setProducts(products);
-      } catch (error) {
-        console.warn("Error fetching alternative data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    doFetch();
-  }, [query]);
+export const ProductAlternatives = ({ query = "Lays Chips", isLoading, aiSynonyms, products }) => {
+  // const [aiSynonyms, setAiSynonyms] = useState([]);
+  // const [products, setProducts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  //
+  //
+  // useEffect(() => {
+  //   async function doFetch() {
+  //     setIsLoading(true);
+  //     try {
+  //       const { synonyms, products } = await getAlternativeData(query);
+  //       setAiSynonyms(synonyms);
+  //       setProducts(products);
+  //     } catch (error) {
+  //       console.warn("Error fetching alternative data:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //
+  //   doFetch();
+  // }, [query]);
 
   // UI Rendering
   const renderProduct = ({ item }) => {

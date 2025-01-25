@@ -15,21 +15,27 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import AlternativesButton from "../../components/AlternativesButton";
+import { getAlternativeData } from "../../components/ProductAlternatives";
 
 const ItemScreen = ({ navigation, route }) => {
   const { barcode } = route.params;
   const { addFridgeItems } = useContext(FridgeContext);
 
   const [itemData, setItemData] = useState(null);
+  const [alternativesData, setAlternativesData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchItem = async () => {
     setLoading(true);
-    const data = await getBarcodeData(barcode);
-    setItemData(data);
-    console.log(data);
+    const itemData = await getBarcodeData(barcode);
+    setItemData(itemData);
+    console.log(itemData);
     setLoading(false);
+
+    const altData = await getAlternativeData(itemData.name);
+    setAlternativesData(altData);
   };
+
 
   useState(() => {
     fetchItem();
@@ -75,9 +81,12 @@ const ItemScreen = ({ navigation, route }) => {
             Ecoscore: {itemData.ecoscore_grade}
           </Text>
           <View className="flex-row">
-            <AlternativesButton onPress={() => {
-              navigation.navigate("Alternatives", {})
-            }} />
+            {alternativesData ?
+              <AlternativesButton onPress={() => {
+                navigation.navigate("Alternatives", { alternativesData })
+              }} /> : <></>
+
+            }
             <AddButton
               onPress={() => {
                 addFridgeItems(itemData);
