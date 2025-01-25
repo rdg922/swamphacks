@@ -56,31 +56,45 @@ const ItemScreen = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView className="items-center px-5">
-      <Text className="font-bold text-3xl text-center mt-4">
-        {itemData.name}
-      </Text>
-      <Image
-        source={{ uri: itemData.image_url }}
-        className="w-60 h-60 rounded-xl mt-5"
-      />
-      <Text className="font-semibold text-lg text-center mt-4">
-        Nutriscore: {itemData.nutriscore_grade}
-      </Text>
-      <Text className="font-semibold text-lg text-center">
-        Ecoscore: {itemData.ecoscore_grade}
-      </Text>
-      <View className="flex-row">
-        <AlternativesButton onPress={() => {
-          navigation.navigate("Alternatives");
-        }} />
-        <AddButton
-          onPress={() => {
-            addFridgeItems(itemData);
-            navigation.goBack();
-          }}
+    <SafeAreaView className="flex-1 items-center px-5 bg-[#FFF982] space-y-4">
+      <View className="bg-white w-full rounded-2xl shadow-neo space-x-4 items-center justify-center p-5 flex-row">
+        <Image
+          source={{ uri: itemData.image_url }}
+          className="w-24 h-24 rounded-xl"
         />
+        <Text className="font-bold text-xl text-center flex-shrink">
+          {itemData.name}
+        </Text>
       </View>
+
+      <View className="flex-row space-x-4">
+        <View className="bg-white rounded-2xl shadow-neo flex-grow">
+        </View>
+        <View className="bg-white rounded-2xl shadow-neo">
+          <Text className="font-semibold text-lg text-center">
+            Ecoscore: {itemData.ecoscore_grade}
+          </Text>
+          <View className="flex-row">
+            <AlternativesButton onPress={() => {
+              navigation.navigate("Alternatives", {})
+            }} />
+            <AddButton
+              onPress={() => {
+                addFridgeItems(itemData);
+                navigation.goBack();
+              }}
+            />
+          </View>
+        </View>
+      </View>
+
+
+      <AddButton
+        onPress={() => {
+          addFridgeItems(itemData);
+          navigation.navigate('Fridge');
+        }}
+      />
     </SafeAreaView>
   );
 };

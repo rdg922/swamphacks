@@ -69,48 +69,57 @@ Given the user typed: "${searchTerm}"`;
   }
 };
 
-export const ProductAlternatives = ({ query = "Lays Chips" }) => {
+export async function fetchAlternativeData(searchTerm) {
+  // 1) Get synonyms from AI
+  const synonyms = await getSynonymsFromAI(searchTerm);
+
+  // 2) Build a full list of search terms (including original)
+  const allSearchTerms = [searchTerm, ...synonyms];
+
+  // 3) Collect products in a Map to avoid duplicates
+  const productSet = new Map(); // key: product_id, value: product object
+  for (const term of allSearchTerms) {
+    const results = await fetchOFFProducts(term);
+    results.forEach((prod) => {
+      if (!productSet.has(prod._id)) {
+        productSet.set(prod._id, prod);
+      }
+    });
+  }
+
+  // 4) Convert the Map to an array
+  let combinedProducts = Array.from(productSet.values());
+
+  // 5) Sort by Eco-Score (descending), if available
+  combinedProducts.sort((a, b) => (b.ecoscore_score || 0) - (a.ecoscore_score || 0));
+
+  return {
+    synonyms,
+    products: combinedProducts,
+  };
+}
+
+export const ProductAlternatives = ({ query = "Lays Chips", }) => {
   const [aiSynonyms, setAiSynonyms] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
 
-  // 2. Use the synonyms to fetch alternatives from Open Food Facts
-  const fetchAlternativeProducts = async (searchTerm) => {
-    setIsLoading(true);
-    try {
-      const synonyms = await getSynonymsFromAI(searchTerm);
-      setAiSynonyms(synonyms);
-
-      // Also include the original searchTerm
-      const allSearchTerms = [searchTerm, ...synonyms];
-
-      // Collect products in a Map to avoid duplicates
-      const productSet = new Map(); // key: product_id, value: product object
-
-      for (const term of allSearchTerms) {
-        const results = await fetchOFFProducts(term);
-        results.forEach((prod) => {
-          if (!productSet.has(prod._id)) {
-            productSet.set(prod._id, prod);
-          }
-        });
-      }
-
-      // Convert Map back to an array
-      let combinedProducts = Array.from(productSet.values());
-
-      // Sort by eco score (descending: best -> worst)
-      combinedProducts.sort((a, b) => b.ecoscore_score - a.ecoscore_score);
-
-      setProducts(combinedProducts);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchAlternativeProducts(query);
+    async function doFetch() {
+      setIsLoading(true);
+      try {
+        const { synonyms, products } = await fetchAlternativeData(query);
+        setAiSynonyms(synonyms);
+        setProducts(products);
+      } catch (error) {
+        console.warn("Error fetching alternative data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    doFetch();
   }, [query]);
 
   // UI Rendering
