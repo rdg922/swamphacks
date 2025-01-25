@@ -1,20 +1,31 @@
-import * as React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import FridgeScreen from "./Feed/FridgeScreen";
-import { SafeAreaView } from "react-native-safe-area-context";
+import * as React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import FeedScreen from './Feed/FeedScreen';
+import ItemScreen from './Feed/ItemScreen';
+import ScanBarcodeScreen from './Feed/ScanBarcodeScreen';
 
 const FeedStack = createStackNavigator();
 
 export default function FeedStackScreen() {
   return (
     <>
-      <FeedStack.Navigator>
-        <FeedStack.Screen
-          name="Fridge"
-          component={FridgeScreen}
-          options={{ headerShown: false }}
-        />
-      </FeedStack.Navigator>
+    <FeedStack.Navigator>
+      <FeedStack.Screen
+        name="Feed"
+        component={FeedScreen}
+        options={{ headerShown: false }}
+      />
+      <FeedStack.Screen
+        name="ScanBarcode"
+        component={ScanBarcodeScreen}
+        options={{ headerShown: false }}
+      />
+      <FeedStack.Screen
+        name="Item"
+        component={ItemScreen}
+        options={{ headerShown: false }}
+      />
+    </FeedStack.Navigator>
     </>
   );
 }
