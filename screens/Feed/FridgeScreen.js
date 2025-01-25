@@ -29,7 +29,7 @@ const FridgeScreen = ({ navigation }) => {
           <Text className="text-xl font-bold">Sort By: Date</Text>
         </View>
       </View>
-      <AddButton/>
+      <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
     </SafeAreaView>
   );
 };

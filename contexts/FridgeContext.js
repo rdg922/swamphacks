@@ -1,36 +1,43 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import React, { createContext, useState, useEffect, useContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const FridgeContext = createContext();
 
 export const FridgeDataProvider = ({ children }) => {
+  const [isLoadingFridgeItems, setLoadingFridgeItems] = useState(true);
+  const [fridgeItems, setFridgeItems] = useState([]);
 
-    const [isLoadingFridgeItems, setLoadingFridgeItems] = useState(true);
-    const [fridgeItems, setFridgeItems] = useState([]);
+  const loadFridgeItems = async () => {
+    setLoadingFridgeItems(true);
+    const storageFridgeItems = JSON.parse(
+      await AsyncStorage.getItem("fridgeItems")
+    );
+    setFridgeItems(storageFridgeItems);
+    setLoadingFridgeItems(false);
+  };
 
-    const loadFridgeItems = async () => {
-        setLoadingFridgeItems(true);
-        const storageFridgeItems = JSON.parse(await AsyncStorage.getItem('fridgeItems'));
-        setFridgeItems(storageFridgeItems);
-        setLoadingFridgeItems(false);
-    }
+  const saveFridgeItems = async () => {
+    await AsyncStorage.setItem("fridgeItems", JSON.stringify(fridgeItems));
+  };
 
-    const saveFridgeItems = async () => {
-        await AsyncStorage.setItem('fridgeItems', JSON.stringify(fridgeItems));
-    }
+  const addFridgeItems = async (item) => {
+    setFridgeItems((i) => [...i, item]);
+    saveFridgeItems();
+  };
 
-    const addFridgeItems = async (items) => {
-        setFridgeItems(i => [...i, items]);
-        saveFridgeItems();
-    }
-
-    useState(() => {
-        loadFridgeItems();
-    }, [])
+  useState(() => {
+    loadFridgeItems();
+  }, []);
 
   return (
-    <FridgeContext.Provider value={{ fridgeItems, isLoadingFridgeItems, loadFridgeItems, addFridgeItems }}>
+    <FridgeContext.Provider
+      value={{
+        fridgeItems,
+        isLoadingFridgeItems,
+        loadFridgeItems,
+        addFridgeItems,
+      }}
+    >
       {children}
     </FridgeContext.Provider>
   );
