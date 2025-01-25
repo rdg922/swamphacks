@@ -1,6 +1,7 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import FeedScreen from "./Feed/FridgeScreen";
+import FridgeScreen from "./Feed/FridgeScreen";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const FeedStack = createStackNavigator();
 
@@ -9,8 +10,8 @@ export default function FeedStackScreen() {
     <>
       <FeedStack.Navigator>
         <FeedStack.Screen
-          name="Feed"
-          component={FeedScreen}
+          name="Fridge"
+          component={FridgeScreen}
           options={{ headerShown: false }}
         />
       </FeedStack.Navigator>
