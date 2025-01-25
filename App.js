@@ -13,6 +13,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import FeedStackScreen from './screens/FeedStack';
 import * as Notifications from 'expo-notifications';
 import { registerForPushNotifications } from './logic/notifications';
+import { FridgeDataProvider } from './contexts/FridgeContext';
 
 // Sentry.init({
 //   dsn: '',
@@ -133,7 +134,9 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <AppContent />
+    <FridgeDataProvider>
+      <AppContent />
+    </FridgeDataProvider>
     // <AuthProvider>
     // <BottomSheetProvider>
     //   <GeneDataProvider>

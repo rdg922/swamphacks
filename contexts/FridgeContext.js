@@ -1,17 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as DocumentPicker from 'expo-document-picker';
-import { supabase } from '../supabaseClient';
-import { ttamToBinary, nutriToBinary, binaryToTTAM, binaryTo360 } from '../logic/decode';
-import { el } from 'date-fns/locale';
-import samples from '../samples.json';
-import AuthContext from './AuthContext';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
-import * as Sharing from 'expo-sharing';
-import { TextDecoder } from 'text-encoding';
-import { PDFDocument } from 'pdf-lib';
 
 
 export const FridgeContext = createContext();
