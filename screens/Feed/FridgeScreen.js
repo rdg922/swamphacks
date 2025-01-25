@@ -54,8 +54,6 @@ const FridgeScreen = ({ navigation }) => {
       <View className="absolute bottom-7 right-7">
         <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
       </View>
-      <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
-      <AlternativesButton />
     </SafeAreaView>
   );
 };
