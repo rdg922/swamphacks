@@ -14,6 +14,7 @@ import { getBarcodeData } from "../../logic/barcodeFetch";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import { StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { AddButton } from "../../components/AddButton";
 
 const FridgeScreen = ({ navigation }) => {
   const { fridgeItems, isLoadingFridgeItems, loadFridgeItems, addFridgeItems } =
@@ -28,12 +29,7 @@ const FridgeScreen = ({ navigation }) => {
           <Text className="text-xl font-bold">Sort By: Date</Text>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("ScanBarcode")}
-        className="rounded-full bg-neo-green w-20 h-20"
-      >
-        <FontAwesome6 name="add" color="white" size={40} />
-      </TouchableOpacity>
+      <AddButton/>
     </SafeAreaView>
   );
 };
