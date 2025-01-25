@@ -14,6 +14,7 @@ import { Image } from "expo-image";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
+import AlternativesButton from "../../components/AlternativesButton";
 
 const ItemScreen = ({ navigation, route }) => {
   const { barcode } = route.params;
@@ -69,12 +70,17 @@ const ItemScreen = ({ navigation, route }) => {
       <Text className="font-semibold text-lg text-center">
         Ecoscore: {itemData.ecoscore_grade}
       </Text>
-      <AddButton
-        onPress={() => {
-          addFridgeItems(itemData);
-          navigation.goBack();
-        }}
-      />
+      <View className="flex-row">
+        <AlternativesButton onPress={() => {
+          navigation.navigate("Alternatives");
+        }} />
+        <AddButton
+          onPress={() => {
+            addFridgeItems(itemData);
+            navigation.goBack();
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 };

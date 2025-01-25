@@ -22,37 +22,9 @@ const fetchOFFProducts = async (searchTerm) => {
   }
 };
 
-const getEcoScore = (product) => {
-  if (typeof product.ecoscore_score === 'number') {
-    return product.ecoscore_score; // 0–100
-  }
-
-  const grade = (product.ecoscore_grade || "").toUpperCase();
-  switch (grade) {
-    case "A":
-      return 100;
-    case "B":
-      return 80;
-    case "C":
-      return 60;
-    case "D":
-      return 40;
-    case "E":
-      return 20;
-    default:
-      return 0; // if no data, default to 0
-  }
-};
-
-const ProductAlternatives = ({ query = "Lays Chips" }) => {
-  const [aiSynonyms, setAiSynonyms] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 1. Call OpenAI to get synonyms/alternative descriptions
-  const getSynonymsFromAI = async (searchTerm) => {
-    try {
-      const prompt = `You are a helpful AI that is given the name of a food product. You will generate short alternative and more sustainable product descriptors or synonyms for searching on Open Food Facts.
+const getSynonymsFromAI = async (searchTerm) => {
+  try {
+    const prompt = `You are a helpful AI that is given the name of a food product. You will generate short alternative and more sustainable product descriptors or synonyms for searching on Open Food Facts.
 
 For instance:
 - If the user types "Nutella", you might suggest: "chocolate hazelnut spread".
@@ -65,37 +37,43 @@ Output ONLY a JSON array of strings with no additional commentary, e.g.:
 
 Given the user typed: "${searchTerm}"`;
 
-      const response = await client.chat.completions.create({
-        model: "gpt-3.5-turbo", // or "gpt-4", if available
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful assistant knowledgeable about sustainable shopping.",
-          },
-          { role: "user", content: prompt },
-        ],
-        temperature: 0.7,
-        max_tokens: 100,
-      });
+    const response = await client.chat.completions.create({
+      model: "gpt-3.5-turbo", // or "gpt-4", if available
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful assistant knowledgeable about sustainable shopping.",
+        },
+        { role: "user", content: prompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 100,
+    });
 
-      // Parse the model's JSON array
-      const aiResponse = response.choices[0]?.message?.content?.trim();
-      let synonyms = [];
-      try {
-        synonyms = JSON.parse(aiResponse);
-      } catch (err) {
-        console.warn("Could not parse AI response as JSON:", err, aiResponse);
-      }
-
-      if (!Array.isArray(synonyms)) {
-        synonyms = [];
-      }
-      return synonyms;
-    } catch (error) {
-      console.warn("OpenAI API error:", error);
-      return [];
+    // Parse the model's JSON array
+    const aiResponse = response.choices[0]?.message?.content?.trim();
+    let synonyms = [];
+    try {
+      synonyms = JSON.parse(aiResponse);
+    } catch (err) {
+      console.warn("Could not parse AI response as JSON:", err, aiResponse);
     }
-  };
+
+    if (!Array.isArray(synonyms)) {
+      synonyms = [];
+    }
+    return synonyms;
+  } catch (error) {
+    console.warn("OpenAI API error:", error);
+    return [];
+  }
+};
+
+export const ProductAlternatives = ({ query = "Lays Chips" }) => {
+  const [aiSynonyms, setAiSynonyms] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // 2. Use the synonyms to fetch alternatives from Open Food Facts
   const fetchAlternativeProducts = async (searchTerm) => {
@@ -174,6 +152,7 @@ Given the user typed: "${searchTerm}"`;
 };
 
 export default ProductAlternatives;
+
 
 const styles = StyleSheet.create({
   container: {
