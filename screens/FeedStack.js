@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import FeedScreen from './Feed/FeedScreen';
+import FeedScreen from './Feed/FridgeScreen';
 import ItemScreen from './Feed/ItemScreen';
 import ScanBarcodeScreen from './Feed/ScanBarcodeScreen';
 
