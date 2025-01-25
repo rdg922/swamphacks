@@ -14,6 +14,7 @@ import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Icon } from "@rneui/base";
 import { FontAwesome6 } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ScanBarcodeScreen = ({ navigation }) => {
   const [facing, setFacing] = useState("back");
@@ -75,12 +76,12 @@ const ScanBarcodeScreen = ({ navigation }) => {
         className="flex-1"
         facing={facing}
       >
-        <View className="flex-1 flex-row bg-transparent m-16">
+        <SafeAreaView className="flex-1 flex-row bg-transparent">
           <TouchableOpacity
-            className="flex-1 self-end items-center"
+            className="top-2 left-6"
             onPress={() => navigation.goBack()}
           >
-            <FontAwesome6 name="cancel" color="white" size={40} />
+            <FontAwesome6 name="x" color="white" size={20} />
           </TouchableOpacity>
           <TouchableOpacity
             className="flex-1 self-end items-center"
@@ -88,7 +89,7 @@ const ScanBarcodeScreen = ({ navigation }) => {
           >
             <FontAwesome6 name="camera-rotate" color="white" size={40} />
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
       </CameraView>
     </View>
   );

@@ -17,6 +17,7 @@ import { StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import ItemTile from "../../components/ItemTile";
+import AlternativesButton from "../../components/AlternativesButton";
 
 const FridgeScreen = ({ navigation }) => {
   const { fridgeItems, isLoadingFridgeItems, loadFridgeItems, addFridgeItems } =
@@ -53,6 +54,8 @@ const FridgeScreen = ({ navigation }) => {
       <View className="absolute bottom-7 right-7">
         <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
       </View>
+      <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
+      <AlternativesButton />
     </SafeAreaView>
   );
 };
