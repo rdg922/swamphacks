@@ -19,10 +19,10 @@ import { ProductAlternatives } from "../../components/ProductAlternatives";
 const ProductAlternativesScreen = ({ navigation, route }) => {
   console.log("params", Object.keys(route.params));
 
-  const { synonyms, products } = route.params.alternativesData;
+  const { products } = route.params.alternativesData;
 
 
-  return (<ProductAlternatives aiSynonyms={synonyms} products={products} />);
+  return (<ProductAlternatives products={products} />);
 
 };
 
