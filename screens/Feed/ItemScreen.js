@@ -250,45 +250,45 @@ const ItemScreen = ({ navigation, route }) => {
           </View>
         )}
       </ScrollView>
-      { self &&
+      {!owned && (
         <View className="flex-row w-full justify-between px-4 mt-4">
-        <TouchableOpacity
-          disabled={!alternativesData}
-          className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1"
-          onPress={() =>
-            navigation.navigate("Alternatives", { alternativesData })
-          }
-        >
-          <Text className="text-xl font-bold mr-2">Alternatives</Text>
-          {alternativesData && alternativesData.products ? (
-            <>
-              {alternativesData.products.length > 0 && (
-                <Image
-                  source={{ uri: alternativesData.products[0].image_url }}
-                  className="w-10 h-10 rounded-full object-fill"
-                />
-              )}
-              {alternativesData.products.length > 1 && (
-                <Image
-                  source={{ uri: alternativesData.products[1].image_url }}
-                  className="w-10 h-10 -ml-4 rounded-full object-fill"
-                />
-              )}
-            </>
-          ) : (
-            <ActivityIndicator />
-          )}
-        </TouchableOpacity>
+          <TouchableOpacity
+            disabled={!alternativesData}
+            className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1"
+            onPress={() =>
+              navigation.navigate("Alternatives", { alternativesData })
+            }
+          >
+            <Text className="text-xl font-bold mr-2">Alternatives</Text>
+            {alternativesData && alternativesData.products ? (
+              <>
+                {alternativesData.products.length > 0 && (
+                  <Image
+                    source={{ uri: alternativesData.products[0].image_url }}
+                    className="w-10 h-10 rounded-full object-fill"
+                  />
+                )}
+                {alternativesData.products.length > 1 && (
+                  <Image
+                    source={{ uri: alternativesData.products[1].image_url }}
+                    className="w-10 h-10 -ml-4 rounded-full object-fill"
+                  />
+                )}
+              </>
+            ) : (
+              <ActivityIndicator />
+            )}
+          </TouchableOpacity>
 
-        <View>
-          <AddButton
-            onPress={() => {
-              setModalVisible(true);
-            }}
-          />
+          <View>
+            <AddButton
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            />
+          </View>
         </View>
-      </View>
-      }
+      )}
 
       <Modal
         animationType="none"
