@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getUniqueID } from "react-native-markdown-display";
 
 export const FridgeContext = createContext();
 
@@ -34,7 +35,9 @@ export const FridgeDataProvider = ({ children }) => {
   };
 
   const addFridgeItems = async (item) => {
-    const newItems = [...fridgeItems, item];
+    const newItem = item;
+    newItem['uuid'] = getUniqueID();
+    const newItems = [...fridgeItems, newItem];
     setContextFridgeItems(newItems);
     await saveFridgeItems(newItems);
   };

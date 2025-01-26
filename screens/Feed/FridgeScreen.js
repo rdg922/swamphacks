@@ -82,7 +82,7 @@ const FridgeScreen = ({ navigation }) => {
           <FlatList
             data={fridgeItems}
             numColumns={2}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.uuid}
             className="overflow-visible -z-10"
             showsVerticalScrollIndicator={false}
             columnWrapperStyle={{ justifyContent: "space-between" }}
