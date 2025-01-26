@@ -19,11 +19,17 @@ const year = date.getFullYear().toString().slice(-2); // Get the last two digits
 }
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Item", { barcode: item.id, owned: true, item })}
+      onPress={() =>
+        navigation.navigate("Item", { barcode: item.id, owned: true, item })
+      }
       className="rounded-xl shadow-neo border-black border-[5px] relative bg-neo-light-green w-[48%] mr-1 mb-1"
     >
       <View className=" rounded-b-xl rounded-t-lg p-4 bg-white">
-        <Image source={{ uri: item.image_url }} className="w-full h-40 rounded-lg " />
+        <Image
+          source={{ uri: item.image_url }}
+          className="w-full h-40 rounded-lg "
+          resizeMode="contain"
+        />
         <TouchableOpacity
           className={`absolute top-2 right-2 w-8 h-8 rounded-lg border-[3px] ${
             item.isChecked
