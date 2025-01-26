@@ -82,7 +82,7 @@ const FridgeScreen = ({ navigation }) => {
           <FlatList
             data={fridgeItems}
             numColumns={2}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.uuid}
             className="overflow-visible -z-10"
             showsVerticalScrollIndicator={false}
             columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -91,16 +91,12 @@ const FridgeScreen = ({ navigation }) => {
               (searchText === "" ||
                 item.name.toLowerCase().includes(searchText.toLowerCase())) && (
                 <ItemTile
-                  id={item.id}
-                  imageUrl={item.image_url}
-                  name={item.name}
-                  expirationDate={item.expirationDate}
-                  isChecked={item.isChecked}
+                  item={item}
                   navigation={navigation}
                   onCheckClick={() => {
                     setFridgeItems(
                       fridgeItems.map((fridgeItem) =>
-                        fridgeItem.id === item.id
+                        fridgeItem.uuid === item.uuid
                           ? { ...fridgeItem, isChecked: !fridgeItem.isChecked }
                           : fridgeItem
                       )

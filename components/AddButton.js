@@ -1,7 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
-export const AddButton = ({ onPress }) => {
+export const AddButton = ({ onPress, iconSize = 40, radius = 24 }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -9,9 +9,9 @@ export const AddButton = ({ onPress }) => {
         onPress();
       }}
       activeOpacity={0.8}
-      className="rounded-full bg-neo-green shadow-neo border-black border-[5px] w-24 h-24 justify-center items-center"
+      className={`rounded-full bg-neo-green shadow-neo border-black border-[5px] w-${radius} h-${radius} justify-center items-center`}
     >
-      <FontAwesome6 name="add" color="black" size={40} />
+      <FontAwesome6 name="add" color="black" size={iconSize} />
     </TouchableOpacity>
   );
 };

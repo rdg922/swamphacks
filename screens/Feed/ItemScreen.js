@@ -21,7 +21,7 @@ import { getAlternativeData } from "../../components/ProductAlternatives";
 import DateScroller from "../../components/DateScroller";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { barcode, owned } = route.params;
+  const { barcode, item, owned } = route.params;
   const { addFridgeItems } = useContext(FridgeContext);
 
   const [itemData, setItemData] = useState(null);
@@ -61,9 +61,13 @@ const ItemScreen = ({ navigation, route }) => {
 
   const fetchItem = async () => {
     setLoading(true);
-    const data = await getBarcodeData(barcode);
-    setItemData(data);
-    console.log(data);
+    if (owned && item) {
+      setItemData(item);
+    } else {
+      const data = await getBarcodeData(barcode);
+      setItemData(data);
+      console.log(data);
+    }
     setLoading(false);
 
     if (!owned) {
@@ -117,8 +121,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.nutriscore_grade &&
-              itemData.nutriscore_grade !== "not-applicable" &&
-              itemData.ecoscore_grade !== "unknown" ? (
+                itemData.nutriscore_grade !== "not-applicable" &&
+                itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LtP~yGBjNhrYyErst3X7%%v$s*X7" }}
                   source={nutriscoreImgs[itemData.nutriscore_grade]}
@@ -134,8 +138,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.ecoscore_grade &&
-              itemData.ecoscore_grade !== "not-applicable" &&
-              itemData.ecoscore_grade !== "unknown" ? (
+                itemData.ecoscore_grade !== "not-applicable" &&
+                itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LTRovk=o-VJEn~j[o#f-.ASkNZr=" }}
                   source={ecoscoreImgs[itemData.ecoscore_grade]}
@@ -289,32 +293,36 @@ const ItemScreen = ({ navigation, route }) => {
           </View>
         </View>
       )}
-
       <Modal
         animationType="none"
         visible={modalVisible}
         transparent
         onRequestClose={() => {
           setModalVisible(false);
-        }}
-      >
+        }}>
         <View className="w-full h-full">
-          <TouchableOpacity
-            onPress={() => setModalVisible(false)}
-            className="absolute w-full h-full bg-black opacity-40"
-          />
+          <TouchableOpacity onPress={() => setModalVisible(false)} className="absolute w-full h-full bg-black opacity-40" />
           <View className="w-full h-full items-center justify-center p-4">
             <View className="w-full h-72 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
-              <Text className="font-bold text-lg flex-1">Expiry Date</Text>
+              <Text className="font-extrabold text-lg flex-1 pb-10 w-full">Expiry Date</Text>
               <DateScroller />
-              <AddButton
-                onPress={() => {
+
+              <View className="flex flex-row items-center justify-between py-2 pb-5 px-5">
+                <TouchableOpacity onPress={() => {
                   const addedData = itemData;
-                  addFridgeItems(addedData);
+                  addFridgeItems(addedData)
                   setModalVisible(false);
                   navigation.goBack();
-                }}
-              />
+                }} className="flex grow items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1 mr-4">
+                  <Text className="text-xl font-bold">Skip </Text>
+                </TouchableOpacity>
+                <AddButton onPress={() => {
+                  const addedData = itemData;
+                  addFridgeItems(addedData)
+                  setModalVisible(false);
+                  navigation.goBack();
+                }} size={20} radius={20} />
+              </View>
             </View>
           </View>
         </View>
