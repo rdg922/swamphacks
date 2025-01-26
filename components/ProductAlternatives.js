@@ -1,5 +1,6 @@
 import { OPENAI_API_KEY } from "@env";
 import OpenAI from 'openai';
+import { offToDict } from "../logic/barcodeFetch";
 
 // Prepare OpenAI client
 const client = new OpenAI({
@@ -9,7 +10,6 @@ const client = new OpenAI({
 // 1. Smaller page_size to reduce fetch time
 const fetchOFFProducts = async (searchTerm) => {
   const url = "https://us.openfoodfacts.org/cgi/search.pl";
-  // Set page_size to 5 instead of 20
   const params = `?search_terms=${encodeURIComponent(searchTerm)}&page_size=1&json=1`;
 
   try {
@@ -24,9 +24,8 @@ const fetchOFFProducts = async (searchTerm) => {
 
 const getSynonymsFromAI = async (searchTerm) => {
   try {
-    // 2. Limit synonyms to just 2 for speed
     const prompt = `You are a helpful AI that is given the name of a food product. 
-You will generate up to 10 short alternative product descriptors or synonyms for searching on Open Food Facts 
+You will generate up to 5 short alternative product descriptors or synonyms for searching on Open Food Facts 
 that produce a more diverse or unique set of results.
 
 For example:
@@ -50,7 +49,7 @@ Given the user typed: "${searchTerm}"`;
         },
         { role: "user", content: prompt },
       ],
-      temperature: 0.7,
+      temperature: 0.8,
       max_tokens: 100,
     });
 
@@ -77,7 +76,9 @@ Given the user typed: "${searchTerm}"`;
  */
 export async function getAlternativeData(searchTerm) {
   // 1) Get synonyms from AI
+  console.log("start", Date.now());
   const synonyms = await getSynonymsFromAI(searchTerm);
+  console.log("got syn", Date.now());
 
   // 2) Build a full list of search terms (including original)
   const allSearchTerms = [searchTerm, ...synonyms];
@@ -86,9 +87,17 @@ export async function getAlternativeData(searchTerm) {
   const productSet = new Map(); // key: product_id, value: product object
   for (const term of allSearchTerms) {
     const results = await fetchOFFProducts(term);
+    console.log("got a new off", Date.now());
     results.forEach((prod) => {
-      if (!productSet.has(prod._id)) {
-        productSet.set(prod._id, prod);
+      const code = prod.code || prod._id || Math.random().toString();
+      const data = {
+        code,
+        product: prod
+      };
+
+      const dict = offToDict(data);
+      if (!productSet.has(dict.id)) {
+        productSet.set(dict.id, dict);
       }
     });
   }
