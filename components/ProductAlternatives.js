@@ -77,7 +77,6 @@ Given the user typed: "${searchTerm}"`;
  * Fetch synonyms + OFF products, returning at most 5 unique products
  */
 export async function getAlternativeData(searchTerm) {
-  console.log("test 2");
   // 1) Get synonyms from AI
   const synonyms = await getSynonymsFromAI(searchTerm);
 
@@ -101,11 +100,8 @@ export async function getAlternativeData(searchTerm) {
   // 5) Sort by Eco-Score (descending)
   combinedProducts.sort((a, b) => (b.ecoscore_score || 0) - (a.ecoscore_score || 0));
 
-  // 6) Keep only top 5 (or 10) for speed/uniqueness
-  const finalProducts = combinedProducts.slice(0, 5);
-
   return {
-    products: finalProducts,
+    products: combinedProducts,
   };
 }
 
