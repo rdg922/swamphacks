@@ -1,3 +1,5 @@
+import * as additives from '../additives.json';
+
 function toTitleCase(str) {
     return str.replace(
         /\w\S*/g,
@@ -6,15 +8,19 @@ function toTitleCase(str) {
 }
 
 export const offToDict = (data) => {
-    let nova_data = null;
+    let nova_ingredients = null;
+    let nova_additives = null;
     if (data.product.nova_group && data.product.nova_groups_markers && data.product.nova_groups_markers[data.product.nova_group]) {
         const nd_list = [];
+        const na_list = [];
         for (const item of data.product.nova_groups_markers[data.product.nova_group]) {
             if (!item.length) continue;
             'a'.to
             if (item[0] === 'ingredients') nd_list.push(toTitleCase(item[1].split(':')[1]));
+            else if (item[1] in additives) na_list.push(toTitleCase(additives[item[1]]))
         }
-        nova_data = nd_list.join(', ')
+        nova_additives = na_list;
+        nova_ingredients = nd_list;
     }
     
     return {
@@ -30,7 +36,8 @@ export const offToDict = (data) => {
         'salt_level': data.product.nutrient_levels.salt,
         'sugar_level': data.product.nutrient_levels.sugars,
         'nova_grade': data.product.nova_group,
-        'nova_data': nova_data,
+        'nova_ingredients': nova_ingredients,
+        'nova_additives': nova_additives,
         'co2': data.product.ecoscore_data ? data.product.ecoscore_data.agribalyse.co2_total : null
     };
 }
