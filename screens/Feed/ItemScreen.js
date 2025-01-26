@@ -107,6 +107,9 @@ const ItemScreen = ({ navigation, route }) => {
     );
   }
 
+  const placeholderImage =
+    "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
+
   return (
     <SafeAreaView className="flex-1 items-center bg-[#FFF982]">
       <View className="absolute top-[70] left-7 z-10">
@@ -119,7 +122,7 @@ const ItemScreen = ({ navigation, route }) => {
       >
         <View className="border border-black bg-white w-full rounded-2xl shadow-neo space-x-4 items-center justify-center p-5 flex-row">
           <Image
-            source={{ uri: itemData.image_url }}
+            source={{ uri: itemData.image_url || placeholderImage }}
             className="w-24 h-24 rounded-xl"
             contentFit="contain"
           />

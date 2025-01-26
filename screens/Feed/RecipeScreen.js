@@ -104,6 +104,7 @@ const RecipeScreen = ({ navigation, route }) => {
               </View>
             </TouchableOpacity>
           </View>
+          <View className="h-60"/>
         </ScrollView>
       )}
     </SafeAreaView>
