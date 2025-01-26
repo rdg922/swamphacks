@@ -18,6 +18,8 @@ const fetchOFFProducts = async (searchTerm) => {
     return data.products || [];
   } catch (error) {
     console.warn("Failed to fetch from Open Food Facts:", error);
+    console.log(url, params, searchTerm);
+    console.log()
     return [];
   }
 };
@@ -45,7 +47,7 @@ Given the user typed: "${searchTerm}"`;
       messages: [
         {
           role: "system",
-          content: "You are a helpful assistant knowledgeable about sustainable shopping.",
+          content: "You are a helpful assistant knowledgeable about sustainable and healthy shopping.",
         },
         { role: "user", content: prompt },
       ],
@@ -75,24 +77,33 @@ Given the user typed: "${searchTerm}"`;
  * Fetch synonyms + OFF products, returning at most 5 unique products
  */
 export async function getAlternativeData(searchTerm) {
-  // 1) Get synonyms from AI
   console.log("start", Date.now());
-  const synonyms = await getSynonymsFromAI(searchTerm);
-  console.log("got syn", Date.now());
 
-  // 2) Build a full list of search terms (including original)
-  const allSearchTerms = [searchTerm, ...synonyms];
 
-  // 3) Collect products in a Map to avoid duplicates
-  const productSet = new Map(); // key: product_id, value: product object
-  for (const term of allSearchTerms) {
-    const results = await fetchOFFProducts(term);
-    console.log("got a new off", Date.now());
-    results.forEach((prod) => {
+  const attemptGettingAlternativeData = async () => {
+    // 1) Get synonyms from AI
+    const synonyms = await getSynonymsFromAI(searchTerm);
+    console.log("got syn", Date.now());
+
+    // 2) Build a full list of search terms (including the original)
+    const allSearchTerms = [searchTerm, ...synonyms];
+
+    // 3) Fetch products for all search terms in parallel
+    const fetchPromises = allSearchTerms.map((term) => fetchOFFProducts(term));
+
+    // Run all fetches concurrently using Promise.all
+    const resultsArrays = await Promise.all(fetchPromises);
+    console.log("All fetches completed", Date.now());
+
+    // Flatten the results into a single array
+    const allProducts = resultsArrays.flat();
+    // 4) Collect products in a Map to avoid duplicates
+    const productSet = new Map(); // key: product_id, value: product object
+    allProducts.forEach((prod) => {
       const code = prod.code || prod._id || Math.random().toString();
       const data = {
         code,
-        product: prod
+        product: prod,
       };
 
       const dict = offToDict(data);
@@ -100,16 +111,20 @@ export async function getAlternativeData(searchTerm) {
         productSet.set(dict.id, dict);
       }
     });
+
+    // 5) Convert the Map to an array
+    let combinedProducts = Array.from(productSet.values());
+
+    // 6) Sort by Eco-Score (descending)
+    combinedProducts.sort((a, b) => (b.ecoscore_score || 0) - (a.ecoscore_score || 0));
+    return combinedProducts;
   }
+  let products = (await attemptGettingAlternativeData()) || (await attemptGettingAlternativeData());
 
-  // 4) Convert the Map to an array
-  let combinedProducts = Array.from(productSet.values());
 
-  // 5) Sort by Eco-Score (descending)
-  combinedProducts.sort((a, b) => (b.ecoscore_score || 0) - (a.ecoscore_score || 0));
 
   return {
-    products: combinedProducts,
+    products,
   };
 }
 
