@@ -115,8 +115,8 @@ const FridgeScreen = ({ navigation }) => {
             }
           />
         </View>
-        <View className="flex flex-row items-center justify-between px-4 gap-6">
-          <View className="flex-grow">
+        <View className="flex flex-row items-center justify-between space-x-4">
+          <View className="w-60">
             {!allItemsUnchecked && (
               <TouchableOpacity
                 className="flex-row justify-around items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
@@ -132,11 +132,11 @@ const FridgeScreen = ({ navigation }) => {
                   color="black"
                   size={23}
                 />
-                <Text className="text-xl font-bold">Generate Recipe</Text>
+                <Text className="text-lg font-bold">Generate Recipe</Text>
               </TouchableOpacity>
             )}
           </View>
-          <View>
+          <View className="right-0">
             {allItemsUnchecked ? (
               <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
             ) : (

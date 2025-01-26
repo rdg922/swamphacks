@@ -25,7 +25,7 @@ export const offToDict = (data) => {
 
   return {
     'id': data.code,
-    'name': data.product.product_name,
+    'name': data.product.product_name_en_imported || data.product.product_name,
     'image_url': data.product.image_front_url,
     'nutriscore_data': data.product.nutriscore_data,
     'nutriscore_grade': data.product.nutriscore_grade,
