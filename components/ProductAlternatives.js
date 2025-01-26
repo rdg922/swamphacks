@@ -1,4 +1,3 @@
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { OPENAI_API_KEY } from "@env";
 import OpenAI from 'openai';
 
@@ -11,7 +10,7 @@ const client = new OpenAI({
 const fetchOFFProducts = async (searchTerm) => {
   const url = "https://us.openfoodfacts.org/cgi/search.pl";
   // Set page_size to 5 instead of 20
-  const params = `?search_terms=${encodeURIComponent(searchTerm)}&page_size=5&json=1`;
+  const params = `?search_terms=${encodeURIComponent(searchTerm)}&page_size=1&json=1`;
 
   try {
     const response = await fetch(url + params);
@@ -104,62 +103,4 @@ export async function getAlternativeData(searchTerm) {
     products: combinedProducts,
   };
 }
-
-export const ProductAlternatives = ({ query = "Lays Chips", isLoading, products }) => {
-  // UI Rendering
-  const renderProduct = ({ item }) => {
-    const productName = item.product_name || item.product_name_en || "Unknown";
-    const brand = item.brands || "No brand";
-    const ecoGrade = item.ecoscore_grade || "N/A";
-    return (
-      <View style={styles.itemContainer}>
-        <Text style={styles.title}>{productName}</Text>
-        <Text>Brand: {brand}</Text>
-        <Text>Eco-Score: {ecoGrade.toUpperCase()}</Text>
-      </View>
-    );
-  };
-
-  return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" color="#007AFF" />
-      ) : (
-        <>
-          {products.length === 0 ? (
-            <Text>No products found.</Text>
-          ) : (
-            <FlatList
-              data={products}
-              keyExtractor={(item) => item._id || Math.random().toString()}
-              renderItem={renderProduct}
-            />
-          )}
-        </>
-      )}
-    </View>
-  );
-};
-
-export default ProductAlternatives;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  synonyms: {
-    marginBottom: 8,
-    fontStyle: "italic",
-  },
-  itemContainer: {
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  title: {
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-});
 
