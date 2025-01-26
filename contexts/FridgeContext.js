@@ -41,6 +41,7 @@ export const FridgeDataProvider = ({ children }) => {
         isLoadingFridgeItems,
         loadFridgeItems,
         addFridgeItems,
+        setFridgeItems,
       }}
     >
       {children}

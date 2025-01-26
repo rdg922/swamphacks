@@ -17,7 +17,6 @@ import { StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import ItemTile from "../../components/ItemTile";
-import AlternativesButton from "../../components/AlternativesButton";
 
 const FridgeScreen = ({ navigation }) => {
   const {
@@ -27,6 +26,10 @@ const FridgeScreen = ({ navigation }) => {
     addFridgeItems,
     setFridgeItems,
   } = useContext(FridgeContext);
+
+  const handleRemoveSelected = async () => {
+    setFridgeItems(fridgeItems.filter((fridgeItem) => !fridgeItem.isChecked));
+  };
   return (
     <SafeAreaView className="flex flex-col h-full bg-[#FEF992]">
       <View className="flex-row justify-between items-center p-4">
@@ -53,7 +56,6 @@ const FridgeScreen = ({ navigation }) => {
               expirationDate={item.expirationDate}
               isChecked={item.isChecked}
               onCheckClick={() => {
-                console.log("check clicked " + item.id);
                 setFridgeItems(
                   fridgeItems.map((fridgeItem) =>
                     fridgeItem.id === item.id
@@ -65,21 +67,12 @@ const FridgeScreen = ({ navigation }) => {
             />
           )}
         />
-        {/* <ItemTile
-          imageUrl="https://i5.walmartimages.com/asr/8457cfef-ab75-4bb1-8620-bae6ddd537db.c7d1eb498d47ae519979890cf451d2cf.jpeg"
-          name="Nutella"
-          expirationDate="1/27"
-          isChecked={true}
-        /> */}
-        {/* <ItemTile
-          imageUrl="https://www.lays.com/sites/lays.com/files/2024-02/lays-fun-2%20%281%29%20%281%29%20%281%29.png"
-          name="Lays Wavy"
-          expirationDate="1/27"
-          isChecked={false}
-        /> */}
       </View>
       <View className="absolute bottom-7 left-7">
-        <TouchableOpacity className="flex-row justify-between items-center p-4 bg-neo-red border-black border-[5px] rounded-xl shadow-neo mt-auto">
+        <TouchableOpacity
+          className="flex-row justify-between items-center p-4 bg-neo-red border-black border-[5px] rounded-xl shadow-neo mt-auto"
+          onPress={handleRemoveSelected}
+        >
           <Text className="text-xl font-bold">Remove Selected Items</Text>
         </TouchableOpacity>
       </View>
