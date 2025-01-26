@@ -110,7 +110,7 @@ const ItemScreen = ({ navigation, route }) => {
       </View>
       
       <View className="flex-row space-x-4">
-      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
+      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center overflow-hidden">
       { (itemData.nutriscore_grade && itemData.nutriscore_grade !== 'not-applicable') ?
         <Image
         placeholder={{blurhash: 'LtP~yGBjNhrYyErst3X7%%v$s*X7'}}
@@ -120,7 +120,7 @@ const ItemScreen = ({ navigation, route }) => {
       : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Nutri-Score</Text></View>
       }
       </View>
-      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
+      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center overflow-hidden">
       { (itemData.ecoscore_grade && itemData.ecoscore_grade !== 'not-applicable') ?
         <Image
         placeholder={{blurhash: 'LTRovk=o-VJEn~j[o#f-.ASkNZr='}}
@@ -177,24 +177,26 @@ const ItemScreen = ({ navigation, route }) => {
         </View>
       }
       </ScrollView>
-       <TouchableOpacity disabled={!alternativesData} className="absolute bottom-7 left-7 flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
-       <Text className="text-3xl font-bold">Alternatives</Text>
-       { alternativesData ?
-        <>
-          {alternativesData.length > 0 && <Image className="w-10 h-10 rounded-full object-fill" />}
-          {alternativesData.length > 1 && <Image className="w-10 h-10 rounded-full object-fill" />}
-        </>
-        : <ActivityIndicator className="ml-2"/>
-       }
-        </TouchableOpacity >
+      <View className="flex-row w-full justify-between px-4">
+      <TouchableOpacity disabled={!alternativesData} className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
+      <Text className="text-xl font-bold mr-2">Alternatives</Text>
+      { (alternativesData && alternativesData.products) ?
+      <>
+        {alternativesData.products.length > 0 && <Image source={{uri: alternativesData.products[0].image_url}} className="w-10 h-10 rounded-full object-fill" />}
+        {alternativesData.products.length > 1 && <Image source={{uri: alternativesData.products[1].image_url}} className="w-10 h-10 -ml-4 rounded-full object-fill" />}
+      </>
+      : <ActivityIndicator/>
+      }
+      </TouchableOpacity>
       
-      <View className="absolute bottom-7 right-7">
+      <View>
       <AddButton
         onPress={() => {
           addFridgeItems(itemData);
           navigation.navigate('Fridge');
         }}
       />
+      </View>
       </View>
     </SafeAreaView>
   );
