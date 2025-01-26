@@ -18,6 +18,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { TrashButton } from "../../components/TrashButton";
 import { AddButton } from "../../components/AddButton";
 import ItemTile from "../../components/ItemTile";
+import { getRecipe } from "../../logic/getRecipe";
 
 const FridgeScreen = ({ navigation }) => {
   const {
@@ -115,9 +116,9 @@ const FridgeScreen = ({ navigation }) => {
             {!allItemsUnchecked && (
               <TouchableOpacity
                 className="flex-row justify-center items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
-                onPress={console.log("recipes")}
+                onPress={() => navigation.navigate('Recipe', { items : fridgeItems.filter(i => i.isChecked) })}
               >
-                <Text className="text-xl font-bold">Find Recipes</Text>
+                <Text className="text-xl font-bold">Generate Recipe</Text>
               </TouchableOpacity>
             )}
           </View>
