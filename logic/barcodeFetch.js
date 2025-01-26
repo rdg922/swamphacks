@@ -38,7 +38,7 @@ export const offToDict = (data) => {
     'nova_grade': data.product.nova_group,
     'nova_ingredients': nova_ingredients,
     'nova_additives': nova_additives,
-    'co2': data.product.ecoscore_data ? data.product.ecoscore_data.agribalyse.co2_total : null
+    'co2': data?.product?.ecoscore_data ? data?.product?.ecoscore_data?.agribalyse?.co2_total : null
   };
 }
 
