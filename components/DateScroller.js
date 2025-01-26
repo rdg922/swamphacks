@@ -23,7 +23,7 @@ const NumberScroller = ({ r, height, setter, length }) => {
       onMomentumScrollEnd={handleScrollEnd}
       scrollEventThrottle={16}
       className="w-full h-full"
-      contentContainerStyle={{ alignItems: "center", paddingVertical: height / 2 }}
+      contentContainerStyle={{ alignItems: "center", paddingVertical: height / 2 - 10 }}
     >
       {Array.from({ length }, (_, i) => (i < 9 ? '0' : '') + (i + 1).toString()).map((item) => (
         <View key={item} style={{ height, justifyContent: "center" }}>
@@ -75,40 +75,40 @@ const DateScroller = () => {
       {/* Month Scroller */}
       <View className="w-20 items-center">
         <Text>MONTH</Text>
-      <View className="w-20 h-24 bg-red-800 rounded-lg justify-center overflow-hidden">
-        <NumberScroller
-          r={monthScrollRef}
-          height={NUM_HEIGHT}
-          length={12}
-          setter={setCurrentMonth}
-        />
-      </View>
+        <View className="w-20 h-24 bg-red-800 border border-black border-[5px] rounded-lg justify-center overflow-hidden">
+          <NumberScroller
+            r={monthScrollRef}
+            height={NUM_HEIGHT}
+            length={12}
+            setter={setCurrentMonth}
+          />
+        </View>
       </View>
 
       {/* Date Scroller */}
       <View className="w-20 items-center">
         <Text>DATE</Text>
-      <View className="w-20 h-24 bg-red-800 rounded-lg justify-center overflow-hidden">
-        <NumberScroller
-          r={dateScrollRef}
-          height={NUM_HEIGHT}
-          length={31}
-          setter={setCurrentDate}
-        />
-      </View>
+        <View className="w-20 h-24 bg-red-800 rounded-lg border border-black border-[5px] justify-center overflow-hidden">
+          <NumberScroller
+            r={dateScrollRef}
+            height={NUM_HEIGHT}
+            length={31}
+            setter={setCurrentDate}
+          />
+        </View>
       </View>
 
       {/* Year Scroller */}
       <View className="w-20 items-center">
         <Text>YEAR</Text>
-      <View className="w-20 h-24 bg-red-800 rounded-lg justify-center overflow-hidden">
-        <NumberScroller
-          r={yearScrollRef}
-          height={NUM_HEIGHT}
-          length={99}
-          setter={(index) => setCurrentYear(2000 + index - 1)}
-        />
-      </View>
+        <View className="w-20 h-24 bg-red-800 rounded-lg border border-black border-[5px] justify-center overflow-hidden">
+          <NumberScroller
+            r={yearScrollRef}
+            height={NUM_HEIGHT}
+            length={99}
+            setter={(index) => setCurrentYear(2000 + index - 1)}
+          />
+        </View>
       </View>
     </View>
   );
