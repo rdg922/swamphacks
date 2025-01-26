@@ -5,6 +5,7 @@ import { styled } from "nativewind";
 
 const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
   let formattedDate = "N/A";
+  let expiryColor = "#FFEF8A";
   if (item.expiryDate) {
     const date = new Date(item.expiryDate);
     const today = new Date();
@@ -21,7 +22,15 @@ const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
       const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
 
       formattedDate = `${month}/${day}/${year}`;
+      expiryColor = "#7DFF99"; // green
     }
+    if (date <= today) {
+      expiryColor = "#FF7878"; // red
+    }
+
+
+
+    console.log(expiryColor)
   }
   const placeholderImage =
     "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
@@ -31,7 +40,8 @@ const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
       onPress={() =>
         navigation.navigate("Item", { barcode: item.id, owned: true, item })
       }
-      className="rounded-xl shadow-neo border-black border-[5px] relative bg-neo-light-green w-[48%] mr-1 mb-1"
+      className={`rounded-xl shadow-neo border-black border-[5px] relative w-[48%] mr-1 mb-1`}
+      style={{ backgroundColor: expiryColor }}
     >
       <View className=" rounded-b-xl rounded-t-lg p-4 bg-white">
         <Image
@@ -47,7 +57,7 @@ const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
           onPress={onCheckClick}
         />
       </View>
-      <View className=" p-2 px-4 mb-2 bg-neo-light-green rounded-xl">
+      <View className={`p-2 px-4 mb-2 rounded-xl`}>
         <Text className="text-xl font-bold" numberOfLines={2}>
           {item.name}
         </Text>
