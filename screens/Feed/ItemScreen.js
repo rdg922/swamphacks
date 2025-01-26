@@ -14,6 +14,8 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import { Image, ImageBackground } from "expo-image";
+import { getAlternativeData } from "../../components/ProductAlternatives";
+import AlternativesButton from "../../components/AlternativesButton";
 
 const ItemScreen = ({ navigation, route }) => {
   const { barcode } = route.params;
@@ -66,7 +68,7 @@ const ItemScreen = ({ navigation, route }) => {
     console.log(data);
     setLoading(false);
 
-    const altData = await getAlternativeData(itemData.name);
+    const altData = await getAlternativeData(data.name);
     setAlternativesData(altData);
   };
 
@@ -105,73 +107,73 @@ const ItemScreen = ({ navigation, route }) => {
           {itemData.name}
         </Text>
       </View>
-      
+
       <View className="flex-row space-x-4">
-      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
-      { (itemData.nutriscore_grade && itemData.nutriscore_grade !== 'not-applicable') ?
-        <Image
-        placeholder={{blurhash: 'LtP~yGBjNhrYyErst3X7%%v$s*X7'}}
-          source={ nutriscoreImgs[itemData.nutriscore_grade] }
-          className="w-36 aspect-[1.85]"
-      />
-      : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Nutri-Score</Text></View>
-      }
+        <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
+          {(itemData.nutriscore_grade && itemData.nutriscore_grade !== 'not-applicable') ?
+            <Image
+              placeholder={{ blurhash: 'LtP~yGBjNhrYyErst3X7%%v$s*X7' }}
+              source={nutriscoreImgs[itemData.nutriscore_grade]}
+              className="w-36 aspect-[1.85]"
+            />
+            : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Nutri-Score</Text></View>
+          }
+        </View>
+        <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
+          {(itemData.ecoscore_grade && itemData.ecoscore_grade !== 'not-applicable') ?
+            <Image
+              placeholder={{ blurhash: 'LTRovk=o-VJEn~j[o#f-.ASkNZr=' }}
+              source={ecoscoreImgs[itemData.ecoscore_grade]}
+              className="w-36 aspect-[1.85]"
+            />
+            : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Green Score</Text></View>
+          }
+        </View>
       </View>
-      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
-      { (itemData.ecoscore_grade && itemData.ecoscore_grade !== 'not-applicable') ?
-        <Image
-        placeholder={{blurhash: 'LTRovk=o-VJEn~j[o#f-.ASkNZr='}}
-          source={ ecoscoreImgs[itemData.ecoscore_grade] }
-          className="w-36 aspect-[1.85]"
-      />
-      : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Green Score</Text></View>
-      }
-      </View>
-      </View>
-      { itemData.nova_grade &&
+      {itemData.nova_grade &&
         <View className="bg-white rounded-2xl shadow-neo p-2 w-full space-y-2">
           <View className="flex-row items-center space-x-2">
-            <View style={{backgroundColor: scoreToColor[itemData.nova_grade]}} className="p-2 rounded-lg">
+            <View style={{ backgroundColor: scoreToColor[itemData.nova_grade] }} className="p-2 rounded-lg">
               <Text className="font-bold text-white text-xl">{itemData.nova_grade}</Text>
             </View>
-          <Text className="font-bold text-lg">Ultra-Processing Level</Text>
+            <Text className="font-bold text-lg">Ultra-Processing Level</Text>
           </View>
           <Text className="text-base">Contributing Ingredients: {itemData.nova_data || 'N/A'}</Text>
         </View>
       }
       <View className="w-full flex-row space-x-4">
-      <View style={{backgroundColor: levelToColor[itemData.fat_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='droplet' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Fats</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.fat_level] || 'N/A'}</Text>
-      </View>
-      <View style={{backgroundColor: levelToColor[itemData.saturated_fat_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='hashnode' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Saturated Fats</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.saturated_fat_level] || 'N/A'}</Text>
-      </View>
+        <View style={{ backgroundColor: levelToColor[itemData.fat_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='droplet' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Fats</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.fat_level] || 'N/A'}</Text>
+        </View>
+        <View style={{ backgroundColor: levelToColor[itemData.saturated_fat_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='hashnode' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Saturated Fats</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.saturated_fat_level] || 'N/A'}</Text>
+        </View>
       </View>
       <View className="w-full flex-row space-x-4">
-      <View style={{backgroundColor: levelToColor[itemData.sugar_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='cube' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Sugar</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.sugar_level] || 'N/A'}</Text>
-      </View>
-      <View style={{backgroundColor: levelToColor[itemData.salt_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='cubes-stacked' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Salt</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.salt_level] || 'N/A'}</Text>
-      </View>
+        <View style={{ backgroundColor: levelToColor[itemData.sugar_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='cube' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Sugar</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.sugar_level] || 'N/A'}</Text>
+        </View>
+        <View style={{ backgroundColor: levelToColor[itemData.salt_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='cubes-stacked' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Salt</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.salt_level] || 'N/A'}</Text>
+        </View>
       </View>
 
-       {alternativesData ?
-              <AlternativesButton onPress={() => {
-                navigation.navigate("Alternatives", { alternativesData })
-              }} /> : <></>
+      {alternativesData ?
+        <AlternativesButton onPress={() => {
+          navigation.navigate("Alternatives", { alternativesData })
+        }} /> : <></>
 
-            }
-      
-      
+      }
+
+
       <AddButton
         onPress={() => {
           addFridgeItems(itemData);

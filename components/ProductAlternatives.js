@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { OPENAI_API_KEY } from "@env";
 import OpenAI from 'openai';
@@ -27,15 +26,24 @@ const fetchOFFProducts = async (searchTerm) => {
 const getSynonymsFromAI = async (searchTerm) => {
   try {
     // 2. Limit synonyms to just 2 for speed
-    const prompt = `You are a helpful AI that is given the name of a food product. You will generate up to 2 short alternative and more sustainable product descriptors or synonyms for searching on Open Food Facts.
+    const prompt = `You are a helpful AI that is given the name of a food product. 
+You will generate up to 10 short alternative product descriptors or synonyms for searching on Open Food Facts 
+that produce a more diverse or unique set of results.
+
+For example:
+- If the user types "Nutella", you might suggest terms like "organic hazelnut cocoa spread", 
+  "chocolate almond butter", "sugar-free cocoa spread", or "fair trade hazelnut spread".
+  Avoid repeating the exact brand name. 
+- If the user types "Lay's chips", you might suggest: 
+  "baked potato crisps", "veggie chips", "kettle-cooked chips", "low-salt potato chips".
 
 Output ONLY a JSON array of strings with no additional commentary, e.g.:
-["term1", "term2"]
+["term1", "term2", "term3", "term4", "term5"]
 
 Given the user typed: "${searchTerm}"`;
 
     const response = await client.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -69,6 +77,7 @@ Given the user typed: "${searchTerm}"`;
  * Fetch synonyms + OFF products, returning at most 5 unique products
  */
 export async function getAlternativeData(searchTerm) {
+  console.log("test 2");
   // 1) Get synonyms from AI
   const synonyms = await getSynonymsFromAI(searchTerm);
 
@@ -96,7 +105,6 @@ export async function getAlternativeData(searchTerm) {
   const finalProducts = combinedProducts.slice(0, 5);
 
   return {
-    synonyms,
     products: finalProducts,
   };
 }
