@@ -30,14 +30,17 @@ const FridgeScreen = ({ navigation }) => {
   const handleRemoveSelected = async () => {
     setFridgeItems(fridgeItems.filter((fridgeItem) => !fridgeItem.isChecked));
   };
+
+  const allItemsUnchecked = fridgeItems.every((item) => !item.isChecked);
+
   return (
     <SafeAreaView className="bg-neo-bg">
       <View className="px-4 flex flex-col h-full">
-        <View className="flex-row justify-between items-center py-4">
-          <View className="flex-row justify-between items-center p-4 bg-neo-purple border-black border-[5px] rounded-xl shadow-neo">
+        <View className="flex-row justify-between py-4 gap-7 items-end">
+          <View className="flex-row justify-between items-center p-4 bg-neo-purple border-black border-[5px] shadow-neo">
             <Text className="text-3xl font-bold">My Fridge</Text>
           </View>
-          <TouchableOpacity className="flex-row items-center p-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto">
+          <TouchableOpacity className="flex-row flex-grow items-center p-3 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto">
             <Text className="text-xl font-bold">Sort By: Date</Text>
           </TouchableOpacity>
         </View>
@@ -71,14 +74,23 @@ const FridgeScreen = ({ navigation }) => {
             )}
           />
         </View>
-        <View className="flex flex-row items-center justify-between">
-          <View className="">
-            <TouchableOpacity
-              className="flex-row justify-between items-center p-4 bg-neo-red border-black border-[5px] rounded-xl shadow-neo mt-auto"
-              onPress={handleRemoveSelected}
-            >
-              <Text className="text-xl font-bold">Remove Selected Items</Text>
-            </TouchableOpacity>
+        <View className="flex flex-row items-center justify-between px-4 gap-6">
+          <View className="flex-grow">
+            {allItemsUnchecked ? (
+              <TouchableOpacity
+                className="flex-row justify-center items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
+                onPress={handleRemoveSelected}
+              >
+                <Text className="text-xl font-bold">Find Recipes</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                className="flex-row justify-center items-center px-6 py-4 bg-neo-red border-black border-[5px] rounded-xl shadow-neo mt-auto"
+                onPress={handleRemoveSelected}
+              >
+                <Text className="text-xl font-bold">Delete Items</Text>
+              </TouchableOpacity>
+            )}
           </View>
           <View className="">
             <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
