@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { styled } from "nativewind";
 
 const ItemTile = ({
+  item,
   id,
   imageUrl,
   name,
@@ -14,7 +15,7 @@ const ItemTile = ({
 }) => {
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Item", { barcode: id, owned: true })}
+      onPress={() => navigation.navigate("Item", { barcode: id, owned: true, item })}
       className="rounded-xl shadow-neo border-black border-[5px] relative bg-neo-light-green w-[48%] mr-1 mb-1"
     >
       <View className=" rounded-b-xl rounded-t-lg p-4 bg-white">
@@ -29,7 +30,7 @@ const ItemTile = ({
           onPress={onCheckClick}
         />
       </View>
-      <View className=" p-2 px-4 bg-neo-light-green rounded-xl">
+      <View className=" p-2 px-4 mb-2 bg-neo-light-green rounded-xl">
         <Text className="text-xl font-bold">{name}</Text>
         <Text className="text-sm text-gray-600 font-medium">
           Expires: {expirationDate}

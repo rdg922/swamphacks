@@ -3,6 +3,7 @@ import { getRecipe } from "../../logic/getRecipe";
 import { ActivityIndicator, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BackButton } from "../../components/BackButton";
+import Markdown from 'react-native-markdown-display';
 
 const RecipeScreen = ({ navigation, route }) => {
     const { items } = route.params;
@@ -49,7 +50,7 @@ const RecipeScreen = ({ navigation, route }) => {
             <BackButton onPress={navigation.goBack} />
         </View>
         <ScrollView className="w-full px-4 pt-10" contentContainerStyle={{alignItems: 'center'}}>
-        {loading ? <ActivityIndicator className="mt-10" size='large'/> : recipe.split('\n').map((line, index) => renderLine(line, index))}
+        {loading ? <ActivityIndicator className="mt-10" size='large'/> : <Markdown>{recipe}</Markdown>}
       </ScrollView>
       </SafeAreaView>
     );

@@ -21,7 +21,7 @@ import { getAlternativeData } from "../../components/ProductAlternatives";
 import DateScroller from "../../components/DateScroller";
 
 const ItemScreen = ({ navigation, route }) => {
-  const { barcode, owned } = route.params;
+  const { barcode, item, owned } = route.params;
   const { addFridgeItems } = useContext(FridgeContext);
 
   const [itemData, setItemData] = useState(null);
@@ -61,9 +61,13 @@ const ItemScreen = ({ navigation, route }) => {
 
   const fetchItem = async () => {
     setLoading(true);
-    const data = await getBarcodeData(barcode);
-    setItemData(data);
-    console.log(data);
+    if (owned && item) {
+      setItemData(item);
+    } else {
+      const data = await getBarcodeData(barcode);
+      setItemData(data);
+      console.log(data);
+    }
     setLoading(false);
 
     if (!owned) {
@@ -250,7 +254,7 @@ const ItemScreen = ({ navigation, route }) => {
           </View>
         )}
       </ScrollView>
-      {self &&
+      {!owned && (
         <View className="flex-row w-full justify-between px-4 mt-4">
           <TouchableOpacity
             disabled={!alternativesData}
@@ -288,8 +292,7 @@ const ItemScreen = ({ navigation, route }) => {
             />
           </View>
         </View>
-      }
-
+      )}
       <Modal
         animationType="none"
         visible={modalVisible}
