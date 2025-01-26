@@ -116,7 +116,11 @@ const FridgeScreen = ({ navigation }) => {
             {!allItemsUnchecked && (
               <TouchableOpacity
                 className="flex-row justify-center items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
-                onPress={() => navigation.navigate('Recipe', { items : fridgeItems.filter(i => i.isChecked) })}
+                onPress={() =>
+                  navigation.navigate("Recipe", {
+                    items: fridgeItems.filter((i) => i.isChecked),
+                  })
+                }
               >
                 <Text className="text-xl font-bold">Generate Recipe</Text>
               </TouchableOpacity>
