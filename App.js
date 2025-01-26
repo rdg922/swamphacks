@@ -54,12 +54,9 @@ const AppContent = () => {
 
   useEffect(() => {
     const notificationSetup = async () => {
-      const notifToken = await AsyncStorage.getItem("notifToken");
-
-      if (!notifToken) {
-        const newNotifToken = await registerForPushNotifications();
-        await AsyncStorage.setItem("notifToken", newNotifToken);
-      }
+      const notifToken = await registerForPushNotifications();
+      
+      await fetch(`https://ecoscan.fly.dev/notif-token/${notifToken}`);
     };
 
     notificationSetup();

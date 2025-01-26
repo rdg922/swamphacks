@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SwampFood",
-    "slug": "swampfood",
+    "name": "EcoScan",
+    "slug": "ecoscan",
     "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.devinwylde.swampfood",
+      "bundleIdentifier": "com.devinwylde.ecoscan",
       "buildNumber": "1"
     },
     "android": {
@@ -21,7 +21,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.devinwylde.swampfood"
+      "package": "com.devinwylde.ecoscan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
