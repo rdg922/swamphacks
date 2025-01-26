@@ -177,7 +177,7 @@ const ItemScreen = ({ navigation, route }) => {
         </View>
       }
       </ScrollView>
-      <View className="flex-row w-full justify-between px-4">
+      <View className="flex-row w-full justify-between px-4 mt-4">
       <TouchableOpacity disabled={!alternativesData} className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
       <Text className="text-xl font-bold mr-2">Alternatives</Text>
       { (alternativesData && alternativesData.products) ?
