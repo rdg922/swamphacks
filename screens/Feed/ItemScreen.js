@@ -98,105 +98,106 @@ const ItemScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView className="flex-1 items-center bg-[#FFF982]">
-      <ScrollView showsVerticalScrollIndicator={false} className="w-full h-full overflow-visible px-5 space-y-4" contentContainerStyle={{alignItems: 'center'}}>
-      <View className="bg-white w-full rounded-2xl shadow-neo space-x-4 items-center justify-center p-5 flex-row">
-        <Image
-          source={{ uri: itemData.image_url }}
-          className="w-24 h-24 rounded-xl"
-        />
-        <Text className="font-bold text-xl text-center flex-shrink">
-          {itemData.name}
-        </Text>
-      </View>
-      
-      <View className="flex-row space-x-4">
-      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center overflow-hidden">
-      { (itemData.nutriscore_grade && itemData.nutriscore_grade !== 'not-applicable') ?
-        <Image
-        placeholder={{blurhash: 'LtP~yGBjNhrYyErst3X7%%v$s*X7'}}
-          source={ nutriscoreImgs[itemData.nutriscore_grade] }
-          className="w-36 aspect-[1.85]"
-      />
-      : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Nutri-Score</Text></View>
-      }
-      </View>
-      <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center overflow-hidden">
-      { (itemData.ecoscore_grade && itemData.ecoscore_grade !== 'not-applicable') ?
-        <Image
-        placeholder={{blurhash: 'LTRovk=o-VJEn~j[o#f-.ASkNZr='}}
-          source={ ecoscoreImgs[itemData.ecoscore_grade] }
-          className="w-36 aspect-[1.85]"
-      />
-      : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Green Score</Text></View>
-      }
-      </View>
-      </View>
-      { itemData.nova_grade &&
-        <View className="bg-white rounded-2xl shadow-neo p-2 w-full space-y-2">
-          <View className="flex-row items-center space-x-2">
-            <View style={{backgroundColor: scoreToColor[itemData.nova_grade]}} className="p-2 rounded-lg">
-              <Text className="font-bold text-white text-xl">{itemData.nova_grade}</Text>
+      <ScrollView showsVerticalScrollIndicator={false} className="w-full h-full overflow-visible px-5 space-y-4" contentContainerStyle={{ alignItems: 'center' }}>
+        <View className="bg-white w-full rounded-2xl shadow-neo space-x-4 items-center justify-center p-5 flex-row">
+          <Image
+            source={{ uri: itemData.image_url }}
+            className="w-24 h-24 rounded-xl"
+          />
+          <Text className="font-bold text-xl text-center flex-shrink">
+            {itemData.name}
+          </Text>
+        </View>
+
+        <View className="flex-row space-x-4">
+          <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center overflow-hidden">
+            {(itemData.nutriscore_grade && itemData.nutriscore_grade !== 'not-applicable') ?
+              <Image
+                placeholder={{ blurhash: 'LtP~yGBjNhrYyErst3X7%%v$s*X7' }}
+                source={nutriscoreImgs[itemData.nutriscore_grade]}
+                className="w-36 aspect-[1.85]"
+              />
+              : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Nutri-Score</Text></View>
+            }
+          </View>
+          <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center overflow-hidden">
+            {(itemData.ecoscore_grade && itemData.ecoscore_grade !== 'not-applicable') ?
+              <Image
+                placeholder={{ blurhash: 'LTRovk=o-VJEn~j[o#f-.ASkNZr=' }}
+                source={ecoscoreImgs[itemData.ecoscore_grade]}
+                className="w-36 aspect-[1.85]"
+              />
+              : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Green Score</Text></View>
+            }
+          </View>
+        </View>
+        {itemData.nova_grade &&
+          <View className="bg-white rounded-2xl shadow-neo p-2 w-full space-y-2">
+            <View className="flex-row items-center space-x-2">
+              <View style={{ backgroundColor: scoreToColor[itemData.nova_grade] }} className="p-2 rounded-lg">
+                <Text className="font-bold text-white text-xl">{itemData.nova_grade}</Text>
+              </View>
+              <Text className="font-bold text-lg">Ultra-Processing Level</Text>
             </View>
-          <Text className="font-bold text-lg">Ultra-Processing Level</Text>
+            {itemData.nova_ingredients && <Text className="text-base">Contributing Ingredients: {itemData.nova_ingredients.join(', ')}</Text>}
+            {itemData.nova_additives && <Text className="text-base">Contributing Additives: {itemData.nova_additives.join(', ')}</Text>}
           </View>
-          {itemData.nova_ingredients && <Text className="text-base">Contributing Ingredients: {itemData.nova_ingredients.join(', ')}</Text>}
-          {itemData.nova_additives && <Text className="text-base">Contributing Additives: {itemData.nova_additives.join(', ')}</Text>}
-        </View>
-      }
-      <View className="w-full flex-row space-x-4">
-      <View style={{backgroundColor: levelToColor[itemData.fat_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='droplet' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Fats</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.fat_level] || 'N/A'}</Text>
-      </View>
-      <View style={{backgroundColor: levelToColor[itemData.saturated_fat_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='hashnode' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Saturated Fats</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.saturated_fat_level] || 'N/A'}</Text>
-      </View>
-      </View>
-      <View className="w-full flex-row space-x-4">
-      <View style={{backgroundColor: levelToColor[itemData.sugar_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='cube' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Sugar</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.sugar_level] || 'N/A'}</Text>
-      </View>
-      <View style={{backgroundColor: levelToColor[itemData.salt_level] || 'gray'}} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
-        <FontAwesome6 name='cubes-stacked' size={30} color='white'/>
-        <Text numberOfLines={1} className="font-bold text-white text-xl">Salt</Text>
-        <Text className="font-semibold text-base text-white">{levelToText[itemData.salt_level] || 'N/A'}</Text>
-      </View>
-      </View>
-      { itemData.co2 &&
-        <View className="bg-white rounded-2xl shadow-neo p-4 w-full space-x-4 items-center flex-row">
-          <FontAwesome6 name='car' size={40}/>
-          <View className="flex-1">
-          <Text className="font-medium text-base">Equivalent to driving {(itemData.co2 / 1.7).toFixed(1)} miles in a car.</Text>
-          <Text>({(itemData.co2 * 100).toFixed()}g of CO2 emissions to produce.)</Text>
+        }
+        <View className="w-full flex-row space-x-4">
+          <View style={{ backgroundColor: levelToColor[itemData.fat_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+            <FontAwesome6 name='droplet' size={30} color='white' />
+            <Text numberOfLines={1} className="font-bold text-white text-xl">Fats</Text>
+            <Text className="font-semibold text-base text-white">{levelToText[itemData.fat_level] || 'N/A'}</Text>
+          </View>
+          <View style={{ backgroundColor: levelToColor[itemData.saturated_fat_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+            <FontAwesome6 name='hashnode' size={30} color='white' />
+            <Text numberOfLines={1} className="font-bold text-white text-xl">Saturated Fats</Text>
+            <Text className="font-semibold text-base text-white">{levelToText[itemData.saturated_fat_level] || 'N/A'}</Text>
           </View>
         </View>
-      }
+        <View className="w-full flex-row space-x-4">
+          <View style={{ backgroundColor: levelToColor[itemData.sugar_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+            <FontAwesome6 name='cube' size={30} color='white' />
+            <Text numberOfLines={1} className="font-bold text-white text-xl">Sugar</Text>
+            <Text className="font-semibold text-base text-white">{levelToText[itemData.sugar_level] || 'N/A'}</Text>
+          </View>
+          <View style={{ backgroundColor: levelToColor[itemData.salt_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+            <FontAwesome6 name='cubes-stacked' size={30} color='white' />
+            <Text numberOfLines={1} className="font-bold text-white text-xl">Salt</Text>
+            <Text className="font-semibold text-base text-white">{levelToText[itemData.salt_level] || 'N/A'}</Text>
+          </View>
+        </View>
+        {itemData.co2 &&
+          <View className="bg-white rounded-2xl shadow-neo p-4 w-full space-x-4 items-center flex-row">
+            <FontAwesome6 name='car' size={40} />
+            <View className="flex-1">
+              <Text className="font-medium text-base">Equivalent to driving {(itemData.co2 / 1.7).toFixed(1)} miles in a car.</Text>
+              <Text>({(itemData.co2 * 100).toFixed()}g of CO2 emissions to produce.)</Text>
+            </View>
+          </View>
+        }
       </ScrollView>
       <View className="flex-row w-full justify-between px-4 mt-4">
-      <TouchableOpacity disabled={!alternativesData} className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
-      <Text className="text-xl font-bold mr-2">Alternatives</Text>
-      { (alternativesData && alternativesData.products) ?
-      <>
-        {alternativesData.products.length > 0 && <Image source={{uri: alternativesData.products[0].image_url}} className="w-10 h-10 rounded-full object-fill" />}
-        {alternativesData.products.length > 1 && <Image source={{uri: alternativesData.products[1].image_url}} className="w-10 h-10 -ml-4 rounded-full object-fill" />}
-      </>
-      : <ActivityIndicator/>
-      }
-      </TouchableOpacity>
-      
-      <View>
-      <AddButton
-        onPress={() => {
-          addFridgeItems(itemData);
-          navigation.navigate('Fridge');
-        }}
-      />
-      </View>
+        <TouchableOpacity disabled={!alternativesData} className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
+          <Text className="text-xl font-bold mr-2">Alternatives</Text>
+          {(alternativesData && alternativesData.products) ?
+            <>
+              {alternativesData.products.length > 0 && <Image source={{ uri: alternativesData.products[0].image_url }} className="w-10 h-10 rounded-full object-fill" />}
+              {alternativesData.products.length > 1 && <Image source={{ uri: alternativesData.products[1].image_url }} className="w-10 h-10 -ml-4 rounded-full object-fill" />}
+            </>
+            : <ActivityIndicator />
+          }
+        </TouchableOpacity>
+
+        <View>
+          <AddButton
+            onPress={() => {
+              console.log("pressed!!!", itemData)
+              addFridgeItems(itemData);
+              navigation.navigate('Fridge');
+            }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

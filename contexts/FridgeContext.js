@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const FridgeContext = createContext();
@@ -9,28 +9,42 @@ export const FridgeDataProvider = ({ children }) => {
 
   const loadFridgeItems = async () => {
     setLoadingFridgeItems(true);
-    const storageFridgeItems = JSON.parse(
-      await AsyncStorage.getItem("fridgeItems")
-    );
-    setContextFridgeItems(storageFridgeItems);
-    setLoadingFridgeItems(false);
+    try {
+      const stored = await AsyncStorage.getItem("fridgeItems");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setContextFridgeItems(parsed || []);
+      } else {
+        setContextFridgeItems([]);
+      }
+    } catch (error) {
+      console.error("Error loading fridge items:", error);
+      setContextFridgeItems([]);
+    } finally {
+      setLoadingFridgeItems(false);
+    }
   };
 
-  const saveFridgeItems = async () => {
-    await AsyncStorage.setItem("fridgeItems", JSON.stringify(fridgeItems));
+  const saveFridgeItems = async (items) => {
+    try {
+      await AsyncStorage.setItem("fridgeItems", JSON.stringify(items));
+    } catch (error) {
+      console.error("Error saving fridge items:", error);
+    }
   };
 
   const addFridgeItems = async (item) => {
-    setContextFridgeItems([...fridgeItems, item]);
-    await saveFridgeItems();
+    const newItems = [...fridgeItems, item];
+    setContextFridgeItems(newItems);
+    await saveFridgeItems(newItems);
   };
 
-  const setFridgeItems = async (item) => {
-    setContextFridgeItems(item);
-    await saveFridgeItems();
+  const setFridgeItems = async (items) => {
+    setContextFridgeItems(items);
+    await saveFridgeItems(items);
   };
 
-  useState(() => {
+  useEffect(() => {
     loadFridgeItems();
   }, []);
 
@@ -48,3 +62,4 @@ export const FridgeDataProvider = ({ children }) => {
     </FridgeContext.Provider>
   );
 };
+
