@@ -31,18 +31,50 @@ const FridgeScreen = ({ navigation }) => {
     setFridgeItems(fridgeItems.filter((fridgeItem) => !fridgeItem.isChecked));
   };
 
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
   const allItemsUnchecked = fridgeItems.every((item) => !item.isChecked);
 
   return (
     <SafeAreaView className="bg-neo-bg">
       <View className="px-4 flex flex-col h-full">
         <View className="flex-row justify-between py-4 gap-7 items-end">
-          <View className="flex-row justify-between items-center p-4 bg-neo-purple border-black border-[5px] shadow-neo">
-            <Text className="text-3xl font-bold">My Fridge</Text>
-          </View>
-          <TouchableOpacity className="flex-row flex-grow items-center p-3 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto">
-            <Text className="text-xl font-bold">Sort By: Date</Text>
-          </TouchableOpacity>
+          {isSearching ? (
+            <TouchableOpacity
+              className="flex-row flex-grow items-center justify-center p-3 px-3 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
+              onPress={() => {
+                setIsSearching(!isSearching);
+                setSearchText("");
+              }}
+            >
+              <FontAwesome6 name="magnifying-glass" color="black" size={25} />
+              <TextInput
+                className="flex-grow p-3 font-bold text-xl"
+                autoFocus={true}
+                placeholder="Search..."
+                onChangeText={(text) => {
+                  setSearchText(text);
+                }}
+              />
+              <FontAwesome6 name="x" color="black" size={25} />
+            </TouchableOpacity>
+          ) : (
+            <>
+              <View className="flex-row justify-between items-center p-4 bg-neo-purple border-black border-[5px] shadow-neo">
+                <Text className="text-3xl font-bold">My Fridge</Text>
+              </View>
+              <TouchableOpacity
+                className="flex-row flex-grow items-center justify-center p-3 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
+                onPress={() => {
+                  setIsSearching(!isSearching);
+                }}
+              >
+                <FontAwesome6 name="magnifying-glass" color="black" size={25} />
+                <Text className="text-xl font-bold ml-2">Search</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
         <View className="flex-1 flex-col justify-between">
           <FlatList
@@ -53,25 +85,28 @@ const FridgeScreen = ({ navigation }) => {
             showsVerticalScrollIndicator={false}
             columnWrapperStyle={{ justifyContent: "space-between" }}
             contentContainerStyle={{ gap: 10 }}
-            renderItem={({ item }) => (
-              <ItemTile
-                id={item.id}
-                imageUrl={item.image_url}
-                name={item.name}
-                expirationDate={item.expirationDate}
-                isChecked={item.isChecked}
-                navigation={navigation}
-                onCheckClick={() => {
-                  setFridgeItems(
-                    fridgeItems.map((fridgeItem) =>
-                      fridgeItem.id === item.id
-                        ? { ...fridgeItem, isChecked: !fridgeItem.isChecked }
-                        : fridgeItem
-                    )
-                  );
-                }}
-              />
-            )}
+            renderItem={({ item }) =>
+              (searchText === "" ||
+                item.name.toLowerCase().includes(searchText.toLowerCase())) && (
+                <ItemTile
+                  id={item.id}
+                  imageUrl={item.image_url}
+                  name={item.name}
+                  expirationDate={item.expirationDate}
+                  isChecked={item.isChecked}
+                  navigation={navigation}
+                  onCheckClick={() => {
+                    setFridgeItems(
+                      fridgeItems.map((fridgeItem) =>
+                        fridgeItem.id === item.id
+                          ? { ...fridgeItem, isChecked: !fridgeItem.isChecked }
+                          : fridgeItem
+                      )
+                    );
+                  }}
+                />
+              )
+            }
           />
         </View>
         <View className="flex flex-row items-center justify-between px-4 gap-6">
