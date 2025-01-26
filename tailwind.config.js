@@ -11,6 +11,7 @@ module.exports = {
         "neo-dark-blue": "#3300FF",
         "neo-yellow": "#FFFF00",
         "neo-red": "#FF4911",
+        "neo-bg": "#FEF992",
       },
       boxShadow: {
         neo: "4px 4px 0px rgba(0, 0, 0, 1)", // 4px offset, 0 blur, 100% opacity
