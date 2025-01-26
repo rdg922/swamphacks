@@ -83,7 +83,6 @@ const ItemScreen = ({ navigation, route }) => {
           console.log(error);
         }
       }
-
     }
   };
 
@@ -136,8 +135,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.nutriscore_grade &&
-                itemData.nutriscore_grade !== "not-applicable" &&
-                itemData.ecoscore_grade !== "unknown" ? (
+              itemData.nutriscore_grade !== "not-applicable" &&
+              itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LtP~yGBjNhrYyErst3X7%%v$s*X7" }}
                   source={nutriscoreImgs[itemData.nutriscore_grade]}
@@ -153,8 +152,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.ecoscore_grade &&
-                itemData.ecoscore_grade !== "not-applicable" &&
-                itemData.ecoscore_grade !== "unknown" ? (
+              itemData.ecoscore_grade !== "not-applicable" &&
+              itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LTRovk=o-VJEn~j[o#f-.ASkNZr=" }}
                   source={ecoscoreImgs[itemData.ecoscore_grade]}
@@ -275,7 +274,10 @@ const ItemScreen = ({ navigation, route }) => {
             disabled={!alternativesData}
             className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1"
             onPress={() =>
-              navigation.navigate("Alternatives", { alternativesData, alternativeOf: itemData })
+              navigation.navigate("Alternatives", {
+                alternativesData,
+                alternativeOf: itemData,
+              })
             }
           >
             <Text className="text-xl font-bold mr-2">Alternatives</Text>

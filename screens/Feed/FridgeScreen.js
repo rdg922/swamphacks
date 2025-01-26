@@ -111,13 +111,18 @@ const FridgeScreen = ({ navigation }) => {
           <View className="flex-grow">
             {!allItemsUnchecked && (
               <TouchableOpacity
-                className="flex-row justify-center items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
+                className="flex-row justify-around items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
                 onPress={() =>
                   navigation.navigate("Recipe", {
                     items: fridgeItems.filter((i) => i.isChecked),
                   })
                 }
               >
+                <FontAwesome6
+                  name="wand-magic-sparkles"
+                  color="black"
+                  size={23}
+                />
                 <Text className="text-xl font-bold">Generate Recipe</Text>
               </TouchableOpacity>
             )}
