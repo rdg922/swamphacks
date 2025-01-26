@@ -79,6 +79,13 @@ const FridgeScreen = ({ navigation }) => {
             </>
           )}
         </View>
+        {fridgeItems.length === 0 && (
+          <View className="flex items-center justify-center h-3/4">
+            <Text className="text-xl font-bold text-center">
+              Your fridge is empty. Add some items!
+            </Text>
+          </View>
+        )}
         <View className="flex-1 flex-col justify-between">
           <FlatList
             data={fridgeItems}
