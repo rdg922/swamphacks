@@ -28,6 +28,10 @@ const ItemScreen = ({ navigation, route }) => {
   const [alternativesData, setAlternativesData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  
+  const [currentMonth, setCurrentMonth] = useState(1);
+  const [currentDate, setCurrentDate] = useState(1);
+  const [currentYear, setCurrentYear] = useState(2000);
 
   const nutriscoreImgs = {
     a: require("../../assets/productScores/nutriscore-a.png"),
@@ -305,7 +309,7 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="w-full h-full items-center justify-center p-4">
             <View className="w-full h-72 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
               <Text className="font-extrabold text-lg flex-1 pb-10 w-full">Expiry Date</Text>
-              <DateScroller />
+              <DateScroller setCurrentDate={setCurrentDate} setCurrentMonth={setCurrentMonth} setCurrentYear={setCurrentYear} />
 
               <View className="flex flex-row items-center justify-between py-2 pb-5 px-5">
                 <TouchableOpacity onPress={() => {
@@ -318,6 +322,7 @@ const ItemScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <AddButton onPress={() => {
                   const addedData = itemData;
+                  addedData['expiryDate'] = new Date(currentYear, currentMonth - 1, currentDate);
                   addFridgeItems(addedData)
                   setModalVisible(false);
                   navigation.goBack();

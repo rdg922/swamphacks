@@ -37,11 +37,7 @@ const NumberScroller = ({ r, height, setter, length }) => {
 /**
  * DateScroller Component
  */
-const DateScroller = () => {
-  const [currentMonth, setCurrentMonth] = useState(1);
-  const [currentDate, setCurrentDate] = useState(1);
-  const [currentYear, setCurrentYear] = useState(2000);
-
+const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
   const monthScrollRef = useRef(null);
   const dateScrollRef = useRef(null);
   const yearScrollRef = useRef(null);
@@ -73,9 +69,9 @@ const DateScroller = () => {
   return (
     <View className="flex-row space-x-2 justify-center w-full">
       {/* Month Scroller */}
-      <View className="w-20 items-center">
+      <View className="w-24 items-center">
         <Text>MONTH</Text>
-        <View className="w-20 h-24 bg-red-800 border border-black border-[5px] rounded-lg justify-center overflow-hidden">
+        <View className="w-24 h-24 bg-red-800 border-black border-[5px] rounded-lg justify-center overflow-hidden">
           <NumberScroller
             r={monthScrollRef}
             height={NUM_HEIGHT}
@@ -86,9 +82,9 @@ const DateScroller = () => {
       </View>
 
       {/* Date Scroller */}
-      <View className="w-20 items-center">
+      <View className="w-24 items-center">
         <Text>DATE</Text>
-        <View className="w-20 h-24 bg-red-800 rounded-lg border border-black border-[5px] justify-center overflow-hidden">
+        <View className="w-24 h-24 bg-red-800 rounded-lg border-black border-[5px] justify-center overflow-hidden">
           <NumberScroller
             r={dateScrollRef}
             height={NUM_HEIGHT}
@@ -99,14 +95,14 @@ const DateScroller = () => {
       </View>
 
       {/* Year Scroller */}
-      <View className="w-20 items-center">
+      <View className="w-24 items-center">
         <Text>YEAR</Text>
-        <View className="w-20 h-24 bg-red-800 rounded-lg border border-black border-[5px] justify-center overflow-hidden">
+        <View className="w-24 h-24 bg-red-800 rounded-lg border-black border-[5px] justify-center overflow-hidden">
           <NumberScroller
             r={yearScrollRef}
             height={NUM_HEIGHT}
             length={99}
-            setter={(index) => setCurrentYear(2000 + index - 1)}
+            setter={(index) => setCurrentYear(2000 + index)}
           />
         </View>
       </View>
