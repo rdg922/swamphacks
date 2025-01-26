@@ -71,6 +71,7 @@ const FridgeScreen = ({ navigation }) => {
                 onPress={() => {
                   setIsSearching(!isSearching);
                 }}
+                activeOpacity={0.5}
               >
                 <FontAwesome6 name="magnifying-glass" color="black" size={25} />
                 <Text className="text-xl font-bold ml-2">Search</Text>
@@ -117,6 +118,7 @@ const FridgeScreen = ({ navigation }) => {
                     items: fridgeItems.filter((i) => i.isChecked),
                   })
                 }
+                activeOpacity={0.6}
               >
                 <FontAwesome6
                   name="wand-magic-sparkles"

@@ -18,14 +18,16 @@ const RecipeScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState(null);
   const [ingredients, setIngredients] = useState(null);
   const [instructions, setInstructions] = useState(null);
+  const [isError, setIsError] = useState(false);
 
   const loadRecipe = async () => {
+    setIsError(false);
     setLoading(true);
     const r = await getRecipe(
       items.map((i) => i.name),
       title
     );
-    // const r = `Nacho Cheese Dip||
+    // const r = `Nacho Cheese Dip
     // Ingredients:
     // - 1 cup nachos cheese
     // - 1 cup traditional salsa
@@ -41,11 +43,17 @@ const RecipeScreen = ({ navigation, route }) => {
     // 5. Transfer the nacho cheese dip to a serving bowl and garnish with chopped cilantro.
     // 6. Serve immediately with tortilla chips for dipping.`;
     console.log(r);
-    const [title, ingredients, instructions] = r.split("||");
-    setTitle(title.trim());
-    setIngredients(ingredients.trim());
-    setInstructions(instructions.trim());
-    setLoading(false);
+    try {
+      const [title, ingredients, instructions] = r.split("||");
+      setTitle(title.trim());
+      setIngredients(ingredients.trim());
+      setInstructions(instructions.trim());
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+      setIsError(true);
+    }
   };
 
   useEffect(() => {
@@ -62,6 +70,17 @@ const RecipeScreen = ({ navigation, route }) => {
         <View className="flex-1 justify-center items-center">
           <Text className="font-bold text-lg">Generating Recipe...</Text>
           <ActivityIndicator className="mt-8" size="large" />
+        </View>
+      ) : isError ? (
+        <View className="flex-1 justify-center items-center w-full">
+          <Text className="font-bold text-2xl">Whoops!</Text>
+          <Text className="font-bold text-2xl">Something Went Wrong :/</Text>
+          <TouchableOpacity onPress={loadRecipe}>
+            <View className="bg-neo-light-blue p-4 m-5 rounded-xl shadow-neo border-black border-[5px] justify-center items-center flex-row">
+              <FontAwesome6 name="arrows-rotate" color="black" size={25} />
+              <Text className="font-semibold text-2xl ml-3">Regenerate</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       ) : (
         <ScrollView

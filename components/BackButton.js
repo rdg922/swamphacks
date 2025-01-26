@@ -6,6 +6,7 @@ export const BackButton = ({ onPress }) => {
     <TouchableOpacity
       className="bg-neo-red p-4 rounded-full w-20 h-20 flex justify-center items-center border-[5px] border-black shadow-neo"
       onPress={onPress}
+      activeOpacity={0.6}
     >
       <FontAwesome6 name="x" color="white" size={25} />
     </TouchableOpacity>
