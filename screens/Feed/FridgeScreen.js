@@ -91,6 +91,7 @@ const FridgeScreen = ({ navigation }) => {
               (searchText === "" ||
                 item.name.toLowerCase().includes(searchText.toLowerCase())) && (
                 <ItemTile
+                  item={item}
                   id={item.id}
                   imageUrl={item.image_url}
                   name={item.name}
