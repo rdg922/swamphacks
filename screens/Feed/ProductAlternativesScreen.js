@@ -20,13 +20,12 @@ const ProductAlternativesScreen = ({ navigation, route }) => {
 
   // UI Rendering
   const renderProduct = ({ item }) => {
-    const productName = item.product_name || item.product_name_en || "Unknown";
-    const brand = item.brands || "No brand";
+    const productName = item.name || "Unknown";
+    // const brand = item.brands || "No brand";
     const ecoGrade = item.ecoscore_grade || "N/A";
     return (
       <View className="bg-white border-black border-[5px] rounded-xl p-4 shadow-neo mb-4">
         <Text className="text-2xl font-bold mb-2">{productName}</Text>
-        <Text className="text-lg">Brand: {brand}</Text>
         <Text className="text-lg">Eco-Score: {ecoGrade.toUpperCase()}</Text>
       </View>
     );

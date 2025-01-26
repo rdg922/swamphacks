@@ -93,6 +93,7 @@ const ItemScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView className="flex-1 items-center bg-[#FFF982]">
       <ScrollView
+        showsVerticalScrollIndicator={false}
         className="w-full h-full overflow-visible px-5 space-y-4"
         contentContainerStyle={{ alignItems: "center" }}
       >
@@ -149,9 +150,16 @@ const ItemScreen = ({ navigation, route }) => {
               </View>
               <Text className="font-bold text-lg">Ultra-Processing Level</Text>
             </View>
-            <Text className="text-base">
-              Contributing Ingredients: {itemData.nova_data || "N/A"}
-            </Text>
+            {itemData.nova_ingredients && (
+              <Text className="text-base">
+                Contributing Ingredients: {itemData.nova_ingredients.join(", ")}
+              </Text>
+            )}
+            {itemData.nova_additives && (
+              <Text className="text-base">
+                Contributing Additives: {itemData.nova_additives.join(", ")}
+              </Text>
+            )}
           </View>
         )}
         <View className="w-full flex-row space-x-4">
@@ -231,16 +239,25 @@ const ItemScreen = ({ navigation, route }) => {
         )}
       </ScrollView>
       <TouchableOpacity
-        className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1"
+        disabled={!alternativesData}
+        className="absolute bottom-7 left-7 flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1"
         onPress={() =>
           navigation.navigate("Alternatives", { alternativesData })
         }
       >
-        <Text className="text-3xl font-bold">
-          {alternativesData ? <Text>Alternatives</Text> : <ActivityIndicator />}
-        </Text>
-        <Image className="rounded-full object-fill" />
-        <Image className="rounded-full object-fill" />
+        <Text className="text-3xl font-bold">Alternatives</Text>
+        {alternativesData ? (
+          <>
+            {alternativesData.length > 0 && (
+              <Image className="w-10 h-10 rounded-full object-fill" />
+            )}
+            {alternativesData.length > 1 && (
+              <Image className="w-10 h-10 rounded-full object-fill" />
+            )}
+          </>
+        ) : (
+          <ActivityIndicator className="ml-2" />
+        )}
       </TouchableOpacity>
 
       <View className="absolute bottom-7 right-7">
