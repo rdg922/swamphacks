@@ -5,7 +5,6 @@ export const TrashButton = ({ onPress }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        console.log("pressed!!");
         onPress();
       }}
       activeOpacity={0.8}
