@@ -17,7 +17,6 @@ import { StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import ItemTile from "../../components/ItemTile";
-import AlternativesButton from "../../components/AlternativesButton";
 
 const FridgeScreen = ({ navigation }) => {
   const {

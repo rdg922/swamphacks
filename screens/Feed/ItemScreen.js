@@ -16,7 +16,6 @@ import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import { Image, ImageBackground } from "expo-image";
 import { getAlternativeData } from "../../components/ProductAlternatives";
-import AlternativesButton from "../../components/AlternativesButton";
 
 const ItemScreen = ({ navigation, route }) => {
   const { barcode } = route.params;
@@ -178,9 +177,12 @@ const ItemScreen = ({ navigation, route }) => {
       }
       </ScrollView>
        {alternativesData ?
-              <AlternativesButton onPress={() => {
-                navigation.navigate("Alternatives", { alternativesData })
-              }} /> : <></>
+       <TouchableOpacity className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
+       <Text className="text-3xl font-bold">Alternatives</Text>
+       <Image className="rounded-full object-fill" />
+       <Image className="rounded-full object-fill" />
+     </TouchableOpacity >
+               : <></>
 
       }
       
