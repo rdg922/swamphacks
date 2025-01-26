@@ -27,7 +27,9 @@ const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
         />
       </View>
       <View className=" p-2 px-4 mb-2 bg-neo-light-green rounded-xl">
-        <Text className="text-xl font-bold">{item.name}</Text>
+        <Text className="text-xl font-bold" numberOfLines={2}>
+          {item.name}
+        </Text>
         <Text className="text-sm text-gray-600 font-medium">
           Expires: {item.expirationDate}
         </Text>

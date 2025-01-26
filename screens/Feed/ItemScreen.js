@@ -102,9 +102,17 @@ const ItemScreen = ({ navigation, route }) => {
 
   return (
     <SafeAreaView className="flex-1 items-center bg-[#FFF982]">
+      <View className="absolute top-[70] left-7 z-10">
+        <TouchableOpacity
+          className="bg-neo-red p-4 rounded-full w-16 h-16 flex justify-center items-center border-[5px] border-black shadow-neo"
+          onPress={navigation.goBack}
+        >
+          <FontAwesome6 name="x" color="white" size={20} />
+        </TouchableOpacity>
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        className="w-full h-full overflow-visible px-5 space-y-4"
+        className="w-full h-full overflow-visible px-5 space-y-4 mt-10"
         contentContainerStyle={{ alignItems: "center" }}
       >
         <View className="border border-black bg-white w-full rounded-2xl shadow-neo space-x-4 items-center justify-center p-5 flex-row">
