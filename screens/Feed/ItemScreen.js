@@ -111,6 +111,7 @@ const ItemScreen = ({ navigation, route }) => {
           <Image
             source={{ uri: itemData.image_url }}
             className="w-24 h-24 rounded-xl"
+            contentFit="contain"
           />
           <Text className="font-bold text-xl text-center flex-shrink">
             {itemData.name}
@@ -121,8 +122,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.nutriscore_grade &&
-                itemData.nutriscore_grade !== "not-applicable" &&
-                itemData.ecoscore_grade !== "unknown" ? (
+              itemData.nutriscore_grade !== "not-applicable" &&
+              itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LtP~yGBjNhrYyErst3X7%%v$s*X7" }}
                   source={nutriscoreImgs[itemData.nutriscore_grade]}
@@ -138,8 +139,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.ecoscore_grade &&
-                itemData.ecoscore_grade !== "not-applicable" &&
-                itemData.ecoscore_grade !== "unknown" ? (
+              itemData.ecoscore_grade !== "not-applicable" &&
+              itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LTRovk=o-VJEn~j[o#f-.ASkNZr=" }}
                   source={ecoscoreImgs[itemData.ecoscore_grade]}
@@ -299,29 +300,42 @@ const ItemScreen = ({ navigation, route }) => {
         transparent
         onRequestClose={() => {
           setModalVisible(false);
-        }}>
+        }}
+      >
         <View className="w-full h-full">
-          <TouchableOpacity onPress={() => setModalVisible(false)} className="absolute w-full h-full bg-black opacity-40" />
+          <TouchableOpacity
+            onPress={() => setModalVisible(false)}
+            className="absolute w-full h-full bg-black opacity-40"
+          />
           <View className="w-full h-full items-center justify-center p-4">
             <View className="w-full h-72 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
-              <Text className="font-extrabold text-lg flex-1 pb-10 w-full">Expiry Date</Text>
+              <Text className="font-extrabold text-lg flex-1 pb-10 w-full">
+                Expiry Date
+              </Text>
               <DateScroller />
 
               <View className="flex flex-row items-center justify-between py-2 pb-5 px-5">
-                <TouchableOpacity onPress={() => {
-                  const addedData = itemData;
-                  addFridgeItems(addedData)
-                  setModalVisible(false);
-                  navigation.goBack();
-                }} className="flex grow items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1 mr-4">
+                <TouchableOpacity
+                  onPress={() => {
+                    const addedData = itemData;
+                    addFridgeItems(addedData);
+                    setModalVisible(false);
+                    navigation.goBack();
+                  }}
+                  className="flex grow items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1 mr-4"
+                >
                   <Text className="text-xl font-bold">Skip </Text>
                 </TouchableOpacity>
-                <AddButton onPress={() => {
-                  const addedData = itemData;
-                  addFridgeItems(addedData)
-                  setModalVisible(false);
-                  navigation.goBack();
-                }} size={20} radius={20} />
+                <AddButton
+                  onPress={() => {
+                    const addedData = itemData;
+                    addFridgeItems(addedData);
+                    setModalVisible(false);
+                    navigation.goBack();
+                  }}
+                  size={20}
+                  radius={20}
+                />
               </View>
             </View>
           </View>
