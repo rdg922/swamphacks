@@ -242,7 +242,7 @@ const ItemScreen = ({ navigation, route }) => {
         disabled={!alternativesData}
         className="absolute bottom-7 left-7 flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1"
         onPress={() =>
-          navigation.navigate("Alternatives", { alternativesData })
+          navigation.navigate("Alternatives", { alternativesData, alternativeOf: itemData })
         }
       >
         <Text className="text-3xl font-bold">Alternatives</Text>
