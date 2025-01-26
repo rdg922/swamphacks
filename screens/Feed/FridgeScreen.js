@@ -15,6 +15,7 @@ import { getBarcodeData } from "../../logic/barcodeFetch";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import { StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { TrashButton } from "../../components/TrashButton";
 import { AddButton } from "../../components/AddButton";
 import ItemTile from "../../components/ItemTile";
 
@@ -111,24 +112,21 @@ const FridgeScreen = ({ navigation }) => {
         </View>
         <View className="flex flex-row items-center justify-between px-4 gap-6">
           <View className="flex-grow">
-            {allItemsUnchecked ? (
+            {!allItemsUnchecked && (
               <TouchableOpacity
                 className="flex-row justify-center items-center px-6 py-4 bg-neo-light-blue border-black border-[5px] rounded-xl shadow-neo mt-auto"
-                onPress={handleRemoveSelected}
+                onPress={console.log("recipes")}
               >
                 <Text className="text-xl font-bold">Find Recipes</Text>
               </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                className="flex-row justify-center items-center px-6 py-4 bg-neo-red border-black border-[5px] rounded-xl shadow-neo mt-auto"
-                onPress={handleRemoveSelected}
-              >
-                <Text className="text-xl font-bold">Delete Items</Text>
-              </TouchableOpacity>
             )}
           </View>
-          <View className="">
-            <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
+          <View>
+            {allItemsUnchecked ? (
+              <AddButton onPress={() => navigation.navigate("ScanBarcode")} />
+            ) : (
+              <TrashButton onPress={handleRemoveSelected} />
+            )}
           </View>
         </View>
       </View>
