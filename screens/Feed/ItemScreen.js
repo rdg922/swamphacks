@@ -92,12 +92,9 @@ const ItemScreen = ({ navigation, route }) => {
 
   if (loading) {
     return (
-      <SafeAreaView>
-        <View>
-          <ActivityIndicator />
-        </View>
-      </SafeAreaView>
-    );
+      <SafeAreaView className="flex-1 justify-center items-center w-full h-full bg-[#FFF982]">
+        <ActivityIndicator />
+      </SafeAreaView>);
   }
 
   if (!itemData) {
@@ -135,8 +132,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.nutriscore_grade &&
-              itemData.nutriscore_grade !== "not-applicable" &&
-              itemData.ecoscore_grade !== "unknown" ? (
+                itemData.nutriscore_grade !== "not-applicable" &&
+                itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LtP~yGBjNhrYyErst3X7%%v$s*X7" }}
                   source={nutriscoreImgs[itemData.nutriscore_grade]}
@@ -152,8 +149,8 @@ const ItemScreen = ({ navigation, route }) => {
           <View className="border border-black bg-white rounded-2xl shadow-neo w-40">
             <View className="w-full overflow-hidden items-center justify-center">
               {itemData.ecoscore_grade &&
-              itemData.ecoscore_grade !== "not-applicable" &&
-              itemData.ecoscore_grade !== "unknown" ? (
+                itemData.ecoscore_grade !== "not-applicable" &&
+                itemData.ecoscore_grade !== "unknown" ? (
                 <Image
                   placeholder={{ blurhash: "LTRovk=o-VJEn~j[o#f-.ASkNZr=" }}
                   source={ecoscoreImgs[itemData.ecoscore_grade]}
