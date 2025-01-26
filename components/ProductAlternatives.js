@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { OPENAI_API_KEY } from "@env";
 import OpenAI from 'openai';
@@ -8,10 +7,12 @@ const client = new OpenAI({
   apiKey: OPENAI_API_KEY,
 });
 
-// A helper function to fetch products from Open Food Facts
+// 1. Smaller page_size to reduce fetch time
 const fetchOFFProducts = async (searchTerm) => {
   const url = "https://us.openfoodfacts.org/cgi/search.pl";
-  const params = `?search_terms=${encodeURIComponent(searchTerm)}&page_size=20&json=1`;
+  // Set page_size to 5 instead of 20
+  const params = `?search_terms=${encodeURIComponent(searchTerm)}&page_size=5&json=1`;
+
   try {
     const response = await fetch(url + params);
     const data = await response.json();
@@ -24,21 +25,25 @@ const fetchOFFProducts = async (searchTerm) => {
 
 const getSynonymsFromAI = async (searchTerm) => {
   try {
-    const prompt = `You are a helpful AI that is given the name of a food product. You will generate short alternative and more sustainable product descriptors or synonyms for searching on Open Food Facts.
+    // 2. Limit synonyms to just 2 for speed
+    const prompt = `You are a helpful AI that is given the name of a food product. 
+You will generate up to 10 short alternative product descriptors or synonyms for searching on Open Food Facts 
+that produce a more diverse or unique set of results.
 
-For instance:
-- If the user types "Nutella", you might suggest: "chocolate hazelnut spread".
-- If the user types "Lay's chips", you might suggest: "crisps", "salted potato chips".
+For example:
+- If the user types "Nutella", you might suggest terms like "organic hazelnut cocoa spread", 
+  "chocolate almond butter", "sugar-free cocoa spread", or "fair trade hazelnut spread".
+  Avoid repeating the exact brand name. 
+- If the user types "Lay's chips", you might suggest: 
+  "baked potato crisps", "veggie chips", "kettle-cooked chips", "low-salt potato chips".
 
-The user might want up to 3 alternative search terms. 
 Output ONLY a JSON array of strings with no additional commentary, e.g.:
-
-["term1", "term2", "term3"]
+["term1", "term2", "term3", "term4", "term5"]
 
 Given the user typed: "${searchTerm}"`;
 
     const response = await client.chat.completions.create({
-      model: "gpt-3.5-turbo", // or "gpt-4", if available
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -50,7 +55,6 @@ Given the user typed: "${searchTerm}"`;
       max_tokens: 100,
     });
 
-    // Parse the model's JSON array
     const aiResponse = response.choices[0]?.message?.content?.trim();
     let synonyms = [];
     try {
@@ -69,7 +73,11 @@ Given the user typed: "${searchTerm}"`;
   }
 };
 
-export async function fetchAlternativeData(searchTerm) {
+/**
+ * Fetch synonyms + OFF products, returning at most 5 unique products
+ */
+export async function getAlternativeData(searchTerm) {
+  console.log("test 2");
   // 1) Get synonyms from AI
   const synonyms = await getSynonymsFromAI(searchTerm);
 
@@ -90,38 +98,18 @@ export async function fetchAlternativeData(searchTerm) {
   // 4) Convert the Map to an array
   let combinedProducts = Array.from(productSet.values());
 
-  // 5) Sort by Eco-Score (descending), if available
+  // 5) Sort by Eco-Score (descending)
   combinedProducts.sort((a, b) => (b.ecoscore_score || 0) - (a.ecoscore_score || 0));
 
+  // 6) Keep only top 5 (or 10) for speed/uniqueness
+  const finalProducts = combinedProducts.slice(0, 5);
+
   return {
-    synonyms,
-    products: combinedProducts,
+    products: finalProducts,
   };
 }
 
-export const ProductAlternatives = ({ query = "Lays Chips", }) => {
-  const [aiSynonyms, setAiSynonyms] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-
-  useEffect(() => {
-    async function doFetch() {
-      setIsLoading(true);
-      try {
-        const { synonyms, products } = await fetchAlternativeData(query);
-        setAiSynonyms(synonyms);
-        setProducts(products);
-      } catch (error) {
-        console.warn("Error fetching alternative data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    doFetch();
-  }, [query]);
-
+export const ProductAlternatives = ({ query = "Lays Chips", isLoading, products }) => {
   // UI Rendering
   const renderProduct = ({ item }) => {
     const productName = item.product_name || item.product_name_en || "Unknown";
@@ -142,9 +130,6 @@ export const ProductAlternatives = ({ query = "Lays Chips", }) => {
         <ActivityIndicator size="large" color="#007AFF" />
       ) : (
         <>
-          {aiSynonyms.length > 0 && (
-            <Text style={styles.synonyms}>AI synonyms: {aiSynonyms.join(", ")}</Text>
-          )}
           {products.length === 0 ? (
             <Text>No products found.</Text>
           ) : (
@@ -161,7 +146,6 @@ export const ProductAlternatives = ({ query = "Lays Chips", }) => {
 };
 
 export default ProductAlternatives;
-
 
 const styles = StyleSheet.create({
   container: {

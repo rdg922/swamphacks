@@ -17,7 +17,11 @@ import { FridgeContext } from "../../contexts/FridgeContext";
 import { ProductAlternatives } from "../../components/ProductAlternatives";
 
 const ProductAlternativesScreen = ({ navigation, route }) => {
-  return <ProductAlternatives />;
+  console.log("params", Object.keys(route.params));
+
+  const { products } = route.params.alternativesData;
+
+  return <ProductAlternatives products={products} />;
 };
 
 export default ProductAlternativesScreen;

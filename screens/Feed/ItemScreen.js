@@ -6,14 +6,15 @@ import {
   TextInput,
   Platform,
   Alert,
-  TouchableOpacity,
+  TouchableOpacity
 } from "react-native";
 import { getBarcodeData } from "../../logic/barcodeFetch";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
+import { Image, ImageBackground } from "expo-image";
+import { getAlternativeData } from "../../components/ProductAlternatives";
 import AlternativesButton from "../../components/AlternativesButton";
 
 const ItemScreen = ({ navigation, route }) => {
@@ -21,7 +22,44 @@ const ItemScreen = ({ navigation, route }) => {
   const { addFridgeItems } = useContext(FridgeContext);
 
   const [itemData, setItemData] = useState(null);
+  const [alternativesData, setAlternativesData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const nutriscoreImgs = {
+    'a': require('../../assets/productScores/nutriscore-a.png'),
+    'b': require('../../assets/productScores/nutriscore-b.png'),
+    'c': require('../../assets/productScores/nutriscore-c.png'),
+    'd': require('../../assets/productScores/nutriscore-d.png'),
+    'e': require('../../assets/productScores/nutriscore-e.png')
+  }
+
+  const ecoscoreImgs = {
+    'a': require('../../assets/productScores/green-score-a.png'),
+    'b': require('../../assets/productScores/green-score-b.png'),
+    'c': require('../../assets/productScores/green-score-c.png'),
+    'd': require('../../assets/productScores/green-score-d.png'),
+    'e': require('../../assets/productScores/green-score-e.png')
+  }
+
+  const levelToColor = {
+    'high': 'red',
+    'moderate': 'orange',
+    'low': 'green'
+  }
+
+  const scoreToColor = [
+    'green',
+    'green',
+    'orange',
+    'red',
+    'red'
+  ]
+
+  const levelToText = {
+    'high': 'High',
+    'moderate': 'Moderate',
+    'low': 'Low'
+  }
 
   const fetchItem = async () => {
     setLoading(true);
@@ -29,6 +67,9 @@ const ItemScreen = ({ navigation, route }) => {
     setItemData(data);
     console.log(data);
     setLoading(false);
+
+    const altData = await getAlternativeData(data.name);
+    setAlternativesData(altData);
   };
 
   useState(() => {
@@ -68,25 +109,69 @@ const ItemScreen = ({ navigation, route }) => {
       </View>
 
       <View className="flex-row space-x-4">
-        <View className="bg-white rounded-2xl shadow-neo flex-grow">
-        </View>
-        <View className="bg-white rounded-2xl shadow-neo">
-          <Text className="font-semibold text-lg text-center">
-            Ecoscore: {itemData.ecoscore_grade}
-          </Text>
-          <View className="flex-row">
-            <AlternativesButton onPress={() => {
-              navigation.navigate("Alternatives", {})
-            }} />
-            <AddButton
-              onPress={() => {
-                addFridgeItems(itemData);
-                navigation.goBack();
-              }}
+        <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
+          {(itemData.nutriscore_grade && itemData.nutriscore_grade !== 'not-applicable') ?
+            <Image
+              placeholder={{ blurhash: 'LtP~yGBjNhrYyErst3X7%%v$s*X7' }}
+              source={nutriscoreImgs[itemData.nutriscore_grade]}
+              className="w-36 aspect-[1.85]"
             />
-          </View>
+            : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Nutri-Score</Text></View>
+          }
+        </View>
+        <View className="bg-white rounded-2xl shadow-neo w-40 items-center justify-center">
+          {(itemData.ecoscore_grade && itemData.ecoscore_grade !== 'not-applicable') ?
+            <Image
+              placeholder={{ blurhash: 'LTRovk=o-VJEn~j[o#f-.ASkNZr=' }}
+              source={ecoscoreImgs[itemData.ecoscore_grade]}
+              className="w-36 aspect-[1.85]"
+            />
+            : <View className="p-3 bg-gray-500 rounded-xl"><Text className="text-white">Missing Green Score</Text></View>
+          }
         </View>
       </View>
+      {itemData.nova_grade &&
+        <View className="bg-white rounded-2xl shadow-neo p-2 w-full space-y-2">
+          <View className="flex-row items-center space-x-2">
+            <View style={{ backgroundColor: scoreToColor[itemData.nova_grade] }} className="p-2 rounded-lg">
+              <Text className="font-bold text-white text-xl">{itemData.nova_grade}</Text>
+            </View>
+            <Text className="font-bold text-lg">Ultra-Processing Level</Text>
+          </View>
+          <Text className="text-base">Contributing Ingredients: {itemData.nova_data || 'N/A'}</Text>
+        </View>
+      }
+      <View className="w-full flex-row space-x-4">
+        <View style={{ backgroundColor: levelToColor[itemData.fat_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='droplet' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Fats</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.fat_level] || 'N/A'}</Text>
+        </View>
+        <View style={{ backgroundColor: levelToColor[itemData.saturated_fat_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='hashnode' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Saturated Fats</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.saturated_fat_level] || 'N/A'}</Text>
+        </View>
+      </View>
+      <View className="w-full flex-row space-x-4">
+        <View style={{ backgroundColor: levelToColor[itemData.sugar_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='cube' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Sugar</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.sugar_level] || 'N/A'}</Text>
+        </View>
+        <View style={{ backgroundColor: levelToColor[itemData.salt_level] || 'gray' }} className="flex-1 rounded-2xl shadow-neo p-2 justify-center items-center">
+          <FontAwesome6 name='cubes-stacked' size={30} color='white' />
+          <Text numberOfLines={1} className="font-bold text-white text-xl">Salt</Text>
+          <Text className="font-semibold text-base text-white">{levelToText[itemData.salt_level] || 'N/A'}</Text>
+        </View>
+      </View>
+
+      {alternativesData ?
+        <AlternativesButton onPress={() => {
+          navigation.navigate("Alternatives", { alternativesData })
+        }} /> : <></>
+
+      }
 
 
       <AddButton
