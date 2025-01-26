@@ -2,7 +2,21 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { styled } from "nativewind";
 
-const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
+const ItemTile = ({
+  item,
+  onClick,
+  onCheckClick,
+  navigation,
+}) => {
+let formattedDate = 'N/A';
+if (item.expiryDate) {
+  const date = new Date(item.expiryDate);
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add 1 because months are zero-based
+const day = date.getDate().toString().padStart(2, '0');
+const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+
+ formattedDate = `${month}/${day}/${year}`;
+}
   return (
     <TouchableOpacity
       onPress={() =>
@@ -31,7 +45,7 @@ const ItemTile = ({ item, onClick, onCheckClick, navigation }) => {
           {item.name}
         </Text>
         <Text className="text-sm text-gray-600 font-medium">
-          Expires: {item.expirationDate}
+          Expires: {formattedDate}
         </Text>
       </View>
     </TouchableOpacity>
