@@ -96,7 +96,7 @@ const FridgeScreen = ({ navigation }) => {
                   onCheckClick={() => {
                     setFridgeItems(
                       fridgeItems.map((fridgeItem) =>
-                        fridgeItem.id === item.id
+                        fridgeItem.uuid === item.uuid
                           ? { ...fridgeItem, isChecked: !fridgeItem.isChecked }
                           : fridgeItem
                       )
