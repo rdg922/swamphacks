@@ -211,15 +211,20 @@ const ItemScreen = ({ navigation, route }) => {
         visible={modalVisible}
         transparent
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
+          setModalVisible(false);
       }}>
         <View className="w-full h-full">
           <TouchableOpacity onPress={() => setModalVisible(false)} className="absolute w-full h-full bg-black opacity-40"/>
         <View className="w-full h-full items-center justify-center p-4">
-          <View className="w-full h-60 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
+          <View className="w-full h-72 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
             <Text className="font-bold text-lg flex-1">Expiry Date</Text>
             <DateScroller/>
+            <AddButton onPress={() => {
+              const addedData = itemData;
+              addFridgeItems(addedData)
+              setModalVisible(false);
+              navigation.goBack();
+            }}/>
             </View>
             </View>
             </View>
