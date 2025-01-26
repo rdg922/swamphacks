@@ -14,7 +14,7 @@ const ItemTile = ({
 }) => {
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Item", { barcode: id })}
+      onPress={() => navigation.navigate("Item", { barcode: id, owned: true })}
       className="rounded-xl shadow-neo border-black border-[5px] relative bg-neo-light-green w-[48%] mr-1 mb-1"
     >
       <View className=" rounded-b-xl rounded-t-lg p-4 bg-white">

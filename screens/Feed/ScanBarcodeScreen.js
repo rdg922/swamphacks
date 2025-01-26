@@ -38,7 +38,7 @@ const ScanBarcodeScreen = ({ navigation }) => {
   }
 
   const handleScannedBarcode = async (scannedBarcode) => {
-    navigation.navigate("Item", { barcode: scannedBarcode.data });
+    navigation.navigate("Item", { barcode: scannedBarcode.data, owned: false });
   };
 
   if (!permission) {
