@@ -23,9 +23,15 @@ const NumberScroller = ({ r, height, setter, length }) => {
       onMomentumScrollEnd={handleScrollEnd}
       scrollEventThrottle={16}
       className="w-full h-full"
-      contentContainerStyle={{ alignItems: "center", paddingVertical: height / 2 - 10 }}
+      contentContainerStyle={{
+        alignItems: "center",
+        paddingVertical: height / 2 - 10,
+      }}
     >
-      {Array.from({ length }, (_, i) => (i < 9 ? '0' : '') + (i + 1).toString()).map((item) => (
+      {Array.from(
+        { length },
+        (_, i) => (i < 9 ? "0" : "") + (i + 1).toString()
+      ).map((item) => (
         <View key={item} style={{ height, justifyContent: "center" }}>
           <Text className="text-6xl">{item}</Text>
         </View>
@@ -37,7 +43,7 @@ const NumberScroller = ({ r, height, setter, length }) => {
 /**
  * DateScroller Component
  */
-const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
+const DateScroller = ({ setCurrentMonth, setCurrentDate, setCurrentYear }) => {
   const monthScrollRef = useRef(null);
   const dateScrollRef = useRef(null);
   const yearScrollRef = useRef(null);
@@ -46,7 +52,7 @@ const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
     const today = new Date();
     const monthIdx = today.getMonth();
     const dateIdx = today.getDate() - 1;
-    const yearIdx = today.getFullYear() % 100 - 1;
+    const yearIdx = (today.getFullYear() % 100) - 1;
 
     monthScrollRef.current?.scrollTo({
       y: NUM_HEIGHT * monthIdx,
@@ -71,7 +77,7 @@ const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
       {/* Month Scroller */}
       <View className="w-24 items-center">
         <Text>MONTH</Text>
-        <View className="w-24 h-24 bg-red-800 border-black border-[5px] rounded-lg justify-center overflow-hidden">
+        <View className="w-24 h-24 bg-white border-black border-[5px] rounded-lg justify-center overflow-hidden">
           <NumberScroller
             r={monthScrollRef}
             height={NUM_HEIGHT}
@@ -83,8 +89,8 @@ const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
 
       {/* Date Scroller */}
       <View className="w-24 items-center">
-        <Text>DATE</Text>
-        <View className="w-24 h-24 bg-red-800 rounded-lg border-black border-[5px] justify-center overflow-hidden">
+        <Text>DAY</Text>
+        <View className="w-24 h-24 bg-white rounded-lg border-black border-[5px] justify-center overflow-hidden">
           <NumberScroller
             r={dateScrollRef}
             height={NUM_HEIGHT}
@@ -97,7 +103,7 @@ const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
       {/* Year Scroller */}
       <View className="w-24 items-center">
         <Text>YEAR</Text>
-        <View className="w-24 h-24 bg-red-800 rounded-lg border-black border-[5px] justify-center overflow-hidden">
+        <View className="w-24 h-24 bg-white rounded-lg border-black border-[5px] justify-center overflow-hidden">
           <NumberScroller
             r={yearScrollRef}
             height={NUM_HEIGHT}
@@ -111,4 +117,3 @@ const DateScroller = ({setCurrentMonth, setCurrentDate, setCurrentYear}) => {
 };
 
 export default DateScroller;
-
