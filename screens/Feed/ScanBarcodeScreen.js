@@ -9,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import { getBarcodeData } from "../../logic/barcodeFetch";
+import { getBarcodejata } from "../../logic/barcodeFetch";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { Icon } from "@rneui/base";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -69,7 +69,7 @@ const ScanBarcodeScreen = ({ navigation }) => {
   }
 
   return (
-    <View className="flex-1 justify-center bg-black">
+    <View className="flex-1 justify-center w-full h-full">
       <CameraView
         barcodeScannerSettings={{
           barcodeTypes: ["ean13", "upc_a", "upc_e"],
@@ -78,16 +78,20 @@ const ScanBarcodeScreen = ({ navigation }) => {
         className="flex-1"
         facing={facing}
       >
-        <SafeAreaView className="flex-1 flex-row bg-transparent">
-          <View className="absolute top-20 left-8">
-            <BackButton onPress={navigation.goBack} />
+        <SafeAreaView className="flex-1 bg-transparent">
+          <View className="absolute top-20 flex-row items-center justify-between w-full px-4">
+            <BackButton onPress={navigation.goBack} className="text-red-500" />
+
+            <Text className="text-white text-2xl font-extrabold text-center flex-1">
+              Scan Barcode:
+            </Text>
           </View>
+
           <View className="absolute left-0 right-0 items-center bottom-16">
             <CameraRotateButton onPress={toggleCameraFacing} />
           </View>
         </SafeAreaView>
-      </CameraView>
-    </View>
+      </CameraView>    </View>
   );
 };
 
