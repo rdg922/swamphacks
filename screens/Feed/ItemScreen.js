@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useRef } from "react";
 import {
   View,
   ActivityIndicator,
@@ -7,7 +7,9 @@ import {
   Platform,
   Alert,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Modal,
+  InteractionManager
 } from "react-native";
 import { getBarcodeData } from "../../logic/barcodeFetch";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,6 +18,7 @@ import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import { Image, ImageBackground } from "expo-image";
 import { getAlternativeData } from "../../components/ProductAlternatives";
+import DateScroller from "../../components/DateScroller";
 
 const ItemScreen = ({ navigation, route }) => {
   const { barcode } = route.params;
@@ -24,6 +27,7 @@ const ItemScreen = ({ navigation, route }) => {
   const [itemData, setItemData] = useState(null);
   const [alternativesData, setAlternativesData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const nutriscoreImgs = {
     'a': require('../../assets/productScores/nutriscore-a.png'),
@@ -68,8 +72,8 @@ const ItemScreen = ({ navigation, route }) => {
     console.log(data);
     setLoading(false);
 
-    const altData = await getAlternativeData(data.name);
-    setAlternativesData(altData);
+    // const altData = await getAlternativeData(data.name);
+    // setAlternativesData(altData);
   };
 
   useEffect(() => {
@@ -196,12 +200,30 @@ const ItemScreen = ({ navigation, route }) => {
       <View>
       <AddButton
         onPress={() => {
-          addFridgeItems(itemData);
-          navigation.navigate('Fridge');
+          setModalVisible(true);
         }}
       />
       </View>
       </View>
+
+      <Modal
+        animationType="none"
+        visible={modalVisible}
+        transparent
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+      }}>
+        <View className="w-full h-full">
+          <TouchableOpacity onPress={() => setModalVisible(false)} className="absolute w-full h-full bg-black opacity-40"/>
+        <View className="w-full h-full items-center justify-center p-4">
+          <View className="w-full h-60 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
+            <Text className="font-bold text-lg flex-1">Expiry Date</Text>
+            <DateScroller/>
+            </View>
+            </View>
+            </View>
+      </Modal>
     </SafeAreaView>
   );
 };
