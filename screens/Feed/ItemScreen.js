@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import {
   View,
   ActivityIndicator,
@@ -72,7 +72,7 @@ const ItemScreen = ({ navigation, route }) => {
     setAlternativesData(altData);
   };
 
-  useState(() => {
+  useEffect(() => {
     fetchItem();
   }, []);
 
