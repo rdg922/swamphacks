@@ -12,7 +12,7 @@ export default function FeedStackScreen() {
     <>
       <FeedStack.Navigator>
         <FeedStack.Screen
-          name="Feed"
+          name="Fridge"
           component={FridgeScreen}
           options={{ headerShown: false }}
         />

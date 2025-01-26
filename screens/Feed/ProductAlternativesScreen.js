@@ -17,10 +17,7 @@ import { FridgeContext } from "../../contexts/FridgeContext";
 import { ProductAlternatives } from "../../components/ProductAlternatives";
 
 const ProductAlternativesScreen = ({ navigation, route }) => {
-  console.log("balls");
-
-  return (<ProductAlternatives />);
-
+  return <ProductAlternatives />;
 };
 
 export default ProductAlternativesScreen;

@@ -2,9 +2,16 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { styled } from "nativewind";
 
-const ItemTile = ({ imageUrl, name, expirationDate, isChecked }) => {
+const ItemTile = ({
+  imageUrl,
+  name,
+  expirationDate,
+  isChecked,
+  onClick,
+  onCheckClick,
+}) => {
   return (
-    <TouchableOpacity className="rounded-xl shadow-neo border-black border-[5px] relative bg-neo-light-green w-[48%]">
+    <TouchableOpacity className="rounded-xl shadow-neo border-black border-[5px] relative bg-neo-light-green w-[48%] mr-1 mb-1">
       <View className=" rounded-b-xl rounded-t-lg p-4 bg-white">
         <Image source={{ uri: imageUrl }} className="w-full h-40 rounded-lg" />
         <TouchableOpacity
@@ -13,6 +20,7 @@ const ItemTile = ({ imageUrl, name, expirationDate, isChecked }) => {
               ? "bg-neo-green shadow-neo-small"
               : "bg-[#CCCCCC] border-[#999999]"
           }`}
+          onPress={console.log("clicked")}
         />
       </View>
       <View className=" p-2 px-4 bg-neo-light-green rounded-xl">

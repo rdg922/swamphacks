@@ -5,14 +5,14 @@ export const FridgeContext = createContext();
 
 export const FridgeDataProvider = ({ children }) => {
   const [isLoadingFridgeItems, setLoadingFridgeItems] = useState(true);
-  const [fridgeItems, setFridgeItems] = useState([]);
+  const [fridgeItems, setContextFridgeItems] = useState([]);
 
   const loadFridgeItems = async () => {
     setLoadingFridgeItems(true);
     const storageFridgeItems = JSON.parse(
       await AsyncStorage.getItem("fridgeItems")
     );
-    setFridgeItems(storageFridgeItems);
+    setContextFridgeItems(storageFridgeItems);
     setLoadingFridgeItems(false);
   };
 
@@ -21,8 +21,13 @@ export const FridgeDataProvider = ({ children }) => {
   };
 
   const addFridgeItems = async (item) => {
-    setFridgeItems((i) => [...i, item]);
-    saveFridgeItems();
+    setContextFridgeItems([...fridgeItems, item]);
+    await saveFridgeItems();
+  };
+
+  const setFridgeItems = async (item) => {
+    setContextFridgeItems(item);
+    await saveFridgeItems();
   };
 
   useState(() => {
