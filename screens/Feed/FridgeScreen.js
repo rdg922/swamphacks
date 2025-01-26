@@ -92,11 +92,6 @@ const FridgeScreen = ({ navigation }) => {
                 item.name.toLowerCase().includes(searchText.toLowerCase())) && (
                 <ItemTile
                   item={item}
-                  id={item.id}
-                  imageUrl={item.image_url}
-                  name={item.name}
-                  expirationDate={item.expirationDate}
-                  isChecked={item.isChecked}
                   navigation={navigation}
                   onCheckClick={() => {
                     setFridgeItems(
