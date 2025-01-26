@@ -18,6 +18,7 @@ import { AddButton } from "../../components/AddButton";
 import { FridgeContext } from "../../contexts/FridgeContext";
 import { Image, ImageBackground } from "expo-image";
 import { getAlternativeData } from "../../components/ProductAlternatives";
+import { SmallBackButton } from "../../components/SmallBackButton";
 import DateScroller from "../../components/DateScroller";
 
 const ItemScreen = ({ navigation, route }) => {
@@ -28,7 +29,7 @@ const ItemScreen = ({ navigation, route }) => {
   const [alternativesData, setAlternativesData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   const [currentMonth, setCurrentMonth] = useState(1);
   const [currentDate, setCurrentDate] = useState(1);
   const [currentYear, setCurrentYear] = useState(2000);
@@ -107,12 +108,7 @@ const ItemScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView className="flex-1 items-center bg-[#FFF982]">
       <View className="absolute top-[70] left-7 z-10">
-        <TouchableOpacity
-          className="bg-neo-red p-4 rounded-full w-16 h-16 flex justify-center items-center border-[5px] border-black shadow-neo"
-          onPress={navigation.goBack}
-        >
-          <FontAwesome6 name="x" color="white" size={20} />
-        </TouchableOpacity>
+        <SmallBackButton onPress={navigation.goBack} />
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -321,8 +317,14 @@ const ItemScreen = ({ navigation, route }) => {
           />
           <View className="w-full h-full items-center justify-center p-4">
             <View className="w-full h-72 bg-red-200 rounded-2xl border-4 border-black shadow-neo p-5">
-              <Text className="font-extrabold text-lg flex-1 pb-10 w-full">Expiry Date</Text>
-              <DateScroller setCurrentDate={setCurrentDate} setCurrentMonth={setCurrentMonth} setCurrentYear={setCurrentYear} />
+              <Text className="font-extrabold text-lg flex-1 pb-10 w-full">
+                Expiry Date
+              </Text>
+              <DateScroller
+                setCurrentDate={setCurrentDate}
+                setCurrentMonth={setCurrentMonth}
+                setCurrentYear={setCurrentYear}
+              />
 
               <View className="flex flex-row items-center justify-between py-2 pb-5 px-5">
                 <TouchableOpacity
@@ -336,13 +338,21 @@ const ItemScreen = ({ navigation, route }) => {
                 >
                   <Text className="text-xl font-bold">Skip </Text>
                 </TouchableOpacity>
-                <AddButton onPress={() => {
-                  const addedData = itemData;
-                  addedData['expiryDate'] = new Date(currentYear, currentMonth - 1, currentDate);
-                  addFridgeItems(addedData)
-                  setModalVisible(false);
-                  navigation.goBack();
-                }} size={20} radius={20} />
+                <AddButton
+                  onPress={() => {
+                    const addedData = itemData;
+                    addedData["expiryDate"] = new Date(
+                      currentYear,
+                      currentMonth - 1,
+                      currentDate
+                    );
+                    addFridgeItems(addedData);
+                    setModalVisible(false);
+                    navigation.goBack();
+                  }}
+                  size={20}
+                  radius={20}
+                />
               </View>
             </View>
           </View>

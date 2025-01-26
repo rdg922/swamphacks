@@ -5,7 +5,6 @@ export const AddButton = ({ onPress, iconSize = 40, radius = 24 }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        console.log("pressed!!");
         onPress();
       }}
       activeOpacity={0.8}
