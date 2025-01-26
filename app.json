@@ -21,7 +21,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.devinwylde.ecoscan"
+      "package": "com.devinwylde.ecoscan",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -46,6 +50,9 @@
       ]
     ],
     "extra": {
+      "eas": {
+        "projectId": "7a3a19b8-cbae-45a3-96bb-c429969c1894"
+      }
     }
   }
 }
