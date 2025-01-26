@@ -20,7 +20,7 @@ const ItemTile = ({
               ? "bg-neo-green shadow-neo-small"
               : "bg-[#CCCCCC] border-[#999999]"
           }`}
-          onPress={console.log("clicked")}
+          onPress={onCheckClick}
         />
       </View>
       <View className=" p-2 px-4 bg-neo-light-green rounded-xl">
