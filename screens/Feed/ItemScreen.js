@@ -177,13 +177,16 @@ const ItemScreen = ({ navigation, route }) => {
         </View>
       }
       </ScrollView>
-       {alternativesData &&
-       <TouchableOpacity disabled={!alternativesData} className="flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
+       <TouchableOpacity disabled={!alternativesData} className="absolute bottom-7 left-7 flex-row justify-between items-center p-4 bg-white border-black border-[5px] rounded-xl shadow-neo active:shadow-none active:mt-1 active:ml-1" onPress={() => navigation.navigate("Alternatives", { alternativesData })}>
        <Text className="text-3xl font-bold">Alternatives</Text>
-       <Image className="rounded-full object-fill" />
-       <Image className="rounded-full object-fill" />
+       { alternativesData ?
+        <>
+          {alternativesData.length > 0 && <Image className="w-10 h-10 rounded-full object-fill" />}
+          {alternativesData.length > 1 && <Image className="w-10 h-10 rounded-full object-fill" />}
+        </>
+        : <ActivityIndicator className="ml-2"/>
+       }
         </TouchableOpacity >
-      }
       
       <View className="absolute bottom-7 right-7">
       <AddButton
